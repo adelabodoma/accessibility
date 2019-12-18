@@ -5,28 +5,53 @@
  * Author: Adel Sadek - Front-end developer at link dev.
  */
 
+
+/**
+* HANDEL UI TASKS
+* RENDER THE HTML
+* CONTROL HIDE AND SHOW ELEMENT
+* 
+*/
+var UI = (function () {
+
+   // All DOM selector
+   var DOMStrings =
+   {
+      fontIncrease: '.accessability__href--increase',
+      fontDecrease: '.accessability__href--decrease',
+   };
+
+
+   return {
+      getDomStrings: function () {
+         return DOMStrings;
+      }
+   }
+
+})();
+
 (function (UI) {
 
    "use strict";
 
-   function Accessibility(selector, options) {
+   function Accessibility(options) {
 
-      return new Accessibility(selector, options);
+      return new Accessibility(options);
    }
 
    /**
     * init the function with passed params.
     * @public
     */
-   Accessibility.init = function (selector, options) {
+   Accessibility.init = function (options) {
 
       // HTML ELEMENT
-      var ele = document.querySelector(selector);
+      // var ele = document.querySelector(selector);
 
       // Check if the selector exist in the DOM
-      if (!ele) {
-         throw Error('Invalid Selector');
-      }
+      // if (!ele) {
+      //    throw Error('Invalid Selector');
+      // }
 
       /**
       * Current options set by the caller including defaults.
@@ -36,7 +61,7 @@
 
 
       // Fire events
-      // setupEventListener();
+      setupEventListener();
    }
 
    // ADD VERSION 
@@ -57,6 +82,7 @@
       increaseCursor: false
    }
 
+
    /** Functionalities
  
    •	Highlight Links
@@ -70,9 +96,47 @@
    •	Increase cursor
    •	Reset 
    */
-   var fontResize = function (size) {
-      alert('Welcome!');
-      document.querySelector('html').style.fontSize = size;
+
+   // current font size count
+   var fontCount = 0;
+   var fontIndex = 0;
+   var fontResize = function (size, type) {
+      // font size ['2rem', ['3rem']]
+      var fontSize = size;
+
+      // check if size is an array not single size
+      if (typeof fontSize === 'object' && Array.isArray(fontSize)) {
+         /**
+          * increase the count if type increase else decrease
+          * @var {fontCount}
+          */
+         // type == "increase" ?  (fontCount < fontSize.length ? fontCount++ : fontCount) : fontCount--;
+
+         /**
+         * increase the index and the count if type increase else decrease
+         * @var {fontIndex}
+         */
+         // type == "increase" ? (fontIndex < fontSize.length ? fontIndex++ : fontIndex) : fontIndex--;
+         type == "increase" ? fontIndex++ : fontIndex--;
+
+         // fontIndex < 0 ? fontIndex = 0 : fontIndex = fontIndex;
+         // fontCount < 0 ? fontCount = 0 : fontCount = fontCount;
+
+         if (fontIndex > fontSize.length) {
+            fontIndex = fontSize.length - 1;
+         }else if (fontIndex < 0) {
+            fontIndex = 0;
+         }
+
+         // html render 
+         document.querySelector('html')
+            .style.fontSize = fontSize[fontIndex];
+
+
+
+      } else if (typeof fontSize === 'string') { // if the font size is just one size 
+         document.querySelector('html').style.fontSize = fontSize;
+      }
    }
 
    var linkHighlight = function (style) {
@@ -119,7 +183,8 @@
       var selector = UI.getDomStrings();
 
       // FONT RESIZE EVENT
-      document.querySelector(selector.fontIncrease).addEventListener('click', fontResize);
+      document.querySelector(selector.fontIncrease).addEventListener('click', fontResize.bind(null, Accessibility.options.fontSize, 'increase'));
+      document.querySelector(selector.fontDecrease).addEventListener('click', fontResize.bind(null, Accessibility.options.fontSize, 'decrease'));
    }
 
    // define the tool in global level at window object
@@ -137,32 +202,8 @@
 
 })(UI);
 
-/**
- * HANDEL UI TASKS
- * RENDER THE HTML
- * CONTROL HIDE AND SHOW ELEMENT
- * 
- */
 
-var UI = (function () {
-
-   // All DOM selector
-   var DOMStrings =
-   {
-      fontIncrease: '.font-increase',
-   };
-
-
-   return {
-      getDomStrings: function () {
-         return DOMStrings;
-      }
-   }
-
-})();
-
-
-document.querySelector('.accessability__link').addEventListener('click', function(){
+document.querySelector('.accessability__link').addEventListener('click', function () {
 
 
    document.querySelector('.accessability__main').classList.toggle('rightPosition');

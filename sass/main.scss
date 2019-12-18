@@ -9,14 +9,18 @@ body {
         display: inline-block;
         font-size: 200%;
         line-height: 0;
-        padding: 10px;
         background-color: #13d376;
         box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
         transition: right 750ms cubic-bezier(.23, 1, .32, 1);
-        position: absolute;
-        right: 173px;
-        top: 142px;
+        position: fixed;
+        right: 180px;
+        top: 150px;
         cursor: pointer;
+        width: 70px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
         &--icon {
             fill: #fff;
