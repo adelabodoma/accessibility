@@ -4,20 +4,84 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/style.css">
     <title>Accessability Tool</title>
 </head>
 <body>
     
-    <section class="accessability">
-        <h1>Welcome</h1>
-    </section>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam quod nisi similique alias modi at atque id, ab consequuntur nobis illo odit unde, sunt dolorum et quibusdam labore asperiores consectetur!</p>
+
+    <nav class="accessability">
+        <div class="accessability__link">
+           <svg class="accessability__link--icon">
+                <use xlink:href="sprite.svg#icon-accessibility"></use>
+           </svg>
+        </div>
+        <div class="accessability__main">
+            <h2 class="accessability__title">
+                Accessibility Tools
+            </h2>
+            <ul class="accessability__items">
+                <li class="accessability__item">
+                    <a href="#" class="accessability__href">
+                        <svg class="accessability--icon">
+                            <use xlink:href="sprite.svg#icon-zoom-in"></use>
+                        </svg>
+                        <span class="accessability--text">Increase Text</span>
+                    </a>
+                </li>
+                <li class="accessability__item">
+                    <a href="#" class="accessability__href">
+                        <svg class="accessability--icon">
+                            <use xlink:href="sprite.svg#icon-zoom-out"></use>
+                        </svg>
+                        <span class="accessability--text">Decrease Text</span>
+                    </a>
+                </li>
+                <li class="accessability__item">
+                    <a href="#" class="accessability__href">
+                        <svg class="accessability--icon">
+                            <use xlink:href="sprite.svg#icon-contrast"></use>
+                        </svg>
+                        <span class="accessability--text">High Contrast</span>
+                    </a>
+                </li>
+                <li class="accessability__item">
+                    <a href="#" class="accessability__href">
+                        <svg class="accessability--icon">
+                            <use xlink:href="sprite.svg#icon-eye"></use>
+                        </svg>
+                        <span class="accessability--text">Negative Contrast</span>
+                    </a>
+                </li>
+                <li class="accessability__item">
+                    <a href="#" class="accessability__href">
+                        <svg class="accessability--icon">
+                            <use xlink:href="sprite.svg#icon-link"></use>
+                        </svg>
+                        <span class="accessability--text">Links Underline</span>
+                    </a>
+                </li>
+                <li class="accessability__item">
+                    <a href="#" class="accessability__href">
+                        <svg class="accessability--icon">
+                            <use xlink:href="sprite.svg#icon-text-color"></use>
+                        </svg>
+                        <span class="accessability--text">Readable Font</span>
+                    </a>
+                </li>
+                <li class="accessability__item">
+                    <a href="#" class="accessability__href">
+                        <svg class="accessability--icon">
+                            <use xlink:href="sprite.svg#icon-reload"></use>
+                        </svg>
+                        <span class="accessability--text">Reset</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
     <script src="accessibility.js"></script>
 </body>
 </html>
-
-<style>
-    h1 {
-        font-size: 1rem;
-    }
-</style>

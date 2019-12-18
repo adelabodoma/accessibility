@@ -162,3 +162,10 @@ var UI = (function () {
 })();
 
 
+document.querySelector('.accessability__link').addEventListener('click', function(){
+
+
+   document.querySelector('.accessability__main').classList.toggle('rightPosition');
+   document.querySelector('.accessability__link').classList.toggle('rightPosition-link');
+
+})

@@ -1,0 +1,60 @@
+body {
+  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif; }
+
+.accessability {
+  position: relative; }
+  .accessability__link {
+    display: inline-block;
+    font-size: 200%;
+    line-height: 0;
+    padding: 10px;
+    background-color: #13d376;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    transition: right 750ms cubic-bezier(0.23, 1, 0.32, 1);
+    position: absolute;
+    right: 173px;
+    top: 142px;
+    cursor: pointer; }
+    .accessability__link--icon {
+      fill: #fff;
+      width: 40px;
+      height: 40px; }
+  .accessability__main {
+    width: 180px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    transition: right 750ms cubic-bezier(0.23, 1, 0.32, 1);
+    font-size: 16px !important;
+    position: fixed;
+    right: 0px;
+    top: 150px;
+    line-height: 1.4;
+    z-index: 9999; }
+  .accessability__title {
+    color: #333;
+    font-size: 100%;
+    margin: 0;
+    font-weight: bold;
+    padding: 10px 15px 0; }
+  .accessability__items {
+    list-style: none;
+    margin: 0;
+    padding: 10px 0; }
+  .accessability__href {
+    text-decoration: none;
+    color: #333;
+    padding: 10px 15px;
+    display: inline-block;
+    display: flex;
+    align-items: center; }
+  .accessability--text {
+    font-size: 80%; }
+  .accessability--icon {
+    width: 15px;
+    height: 15px;
+    margin-right: 10px; }
+
+.rightPosition {
+  right: -180px; }
+
+.rightPosition-link {
+  right: 0px; }
