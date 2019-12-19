@@ -7,11 +7,12 @@
     <link rel="stylesheet" href="css/style.css">
     <title>Accessability Tool</title>
 </head>
-<body>
+<body >
     
     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam quod nisi similique alias modi at atque id, ab consequuntur nobis illo odit unde, sunt dolorum et quibusdam labore asperiores consectetur!</p>
+    <a href="#">Link Test</a>
 
-    <nav class="accessability">
+     <nav class="accessability">
         <div class="accessability__link">
            <svg class="accessability__link--icon">
                 <use xlink:href="sprite.svg#icon-accessibility"></use>
@@ -55,7 +56,7 @@
                     </a>
                 </li>
                 <li class="accessability__item">
-                    <a href="#" class="accessability__href">
+                    <a href="#" class="accessability__href accessability__href--underLine">
                         <svg class="accessability--icon">
                             <use xlink:href="sprite.svg#icon-link"></use>
                         </svg>
@@ -63,7 +64,7 @@
                     </a>
                 </li>
                 <li class="accessability__item">
-                    <a href="#" class="accessability__href">
+                    <a href="#" class="accessability__href accessability__href--font-readable">
                         <svg class="accessability--icon">
                             <use xlink:href="sprite.svg#icon-text-color"></use>
                         </svg>
@@ -80,7 +81,13 @@
                 </li>
             </ul>
         </div>
-    </nav>
+    </nav> 
+
+
+
+    <div id="accessability"></div>
+
+
 
     <script src="accessibility.js"></script>
 </body>

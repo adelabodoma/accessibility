@@ -1,5 +1,5 @@
 body {
-  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif; }
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif; }
 
 .accessability {
   position: relative; }
@@ -57,8 +57,17 @@ body {
     height: 15px;
     margin-right: 10px; }
 
+.ACC__underlineClass a {
+  text-decoration: underline !important; }
+
+.ACC__fontReadable {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif !important; }
+
 .rightPosition {
   right: -180px; }
 
 .rightPosition-link {
   right: 0px; }
+
+a {
+  text-decoration: none; }
