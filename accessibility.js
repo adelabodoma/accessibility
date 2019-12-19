@@ -10,7 +10,6 @@
 * HANDEL UI TASKS
 * RENDER THE HTML
 * CONTROL HIDE AND SHOW ELEMENT
-* 
 */
 var UI = (function () {
 
