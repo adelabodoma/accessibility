@@ -31,8 +31,9 @@ body {
     position: fixed;
     right: 0px;
     top: 150px;
+    min-height: 300px;
     line-height: 1.4;
-    z-index: 9999;
+    z-index: 999999999;
     background-color: #fff; }
   .accessability__title {
     color: #333;
@@ -60,9 +61,6 @@ body {
 
 body.ACC__UNDERLINECLASS a {
   text-decoration: underline !important; }
-
-.ACC__FONTREADABLE {
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif !important; }
 
 .rightPosition {
   right: -180px; }
@@ -1040,3 +1038,22 @@ body.ACC__HIGHCONTRAST a > span.iconHelp:empty:after {
 body.ACC__HIGHCONTRAST div#gmap,
 body.ACC__HIGHCONTRAST div#gmap * {
   background: initial !important; }
+
+body.ACC__FONTREADABLE,
+body.ACC__FONTREADABLE *:not(i):not(span) {
+  font-family: Verdana, Arial, Helvetica, sans-serif !important; }
+
+.ACC__READGUIDELINE {
+  position: fixed;
+  width: 100%;
+  background: #000;
+  height: 5px;
+  border-top: 2px solid #ff0;
+  border-bottom: 2px solid #ff0;
+  top: 50%;
+  z-index: 99999;
+  display: none;
+  left: 0; }
+
+.ACC__READGUIDELINE.show {
+  display: block; }

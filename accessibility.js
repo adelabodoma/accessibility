@@ -11,10 +11,16 @@
 * RENDER THE HTML
 * CONTROL HIDE AND SHOW ELEMENT
 */
-var UI = (function () {
-   // All DOM selector
-   var DOMStrings;
 
+(function () {
+
+   "use strict";
+
+
+   //////////////////////////////////////////////////////////////////////////
+   /////////////////////// VIEW 
+
+   var DOMStrings, htmlRender
    DOMStrings = {
       body: 'body',
       head: 'head',
@@ -24,67 +30,172 @@ var UI = (function () {
 
       accessability__link: '.accessability__link',
       accessability__main: '.accessability__main',
+      accessability__items: '.accessability__items',
 
       fontUnderLine: '.accessability__href--underLine',
       fontReadable: '.accessability__href--font-readable',
       highContrast: '.accessability__href--high-contrast',
       negativeContrast: '.accessability__href--negative-contrast',
+      readGuide: '.accessability__href--read-guide',
       reset: '.accessability__href--reset',
 
       // HELPERS CSS CLASSES
       underLineClass: 'ACC__UNDERLINECLASS',
       nigativeContrastClass: 'ACC__NIGATIVECONTRAST',
       highContrastClass: 'ACC__HIGHCONTRAST',
-      fontReadableClass: 'ACC__FONTREADABLE'
+      fontReadableClass: 'ACC__FONTREADABLE',
+      readGuideClass: '.ACC__READGUIDELINE'
+
 
    };
 
+   htmlRender = function (selector, settings) {
+      var htmlTemplate, itemList, fontIncreaseMarkup, fontDecreaseWrapper, markup;
 
-   return {
-      getDomStrings: function () {
-         return DOMStrings;
-      },
-      htmlRender: function (selector, cb) {
-         var htmlTemplate;
-         htmlTemplate = '<nav class="accessability"> <div class="accessability__link"> <svg class="accessability__link--icon"> <use xlink:href="sprite.svg#icon-accessibility"></use> </svg> </div> <div class="accessability__main"> <h2 class="accessability__title"> Accessibility Tools </h2> <ul class="accessability__items"> <li class="accessability__item"> <a href="#" class="accessability__href accessability__href--increase"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-zoom-in"></use> </svg> <span class="accessability--text">Increase Text</span> </a> </li> <li class="accessability__item"> <a href="#" class="accessability__href accessability__href--decrease"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-zoom-out"></use> </svg> <span class="accessability--text">Decrease Text</span> </a> </li> <li class="accessability__item"> <a href="#" class="accessability__href accessability__href--high-contrast"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-contrast"></use> </svg> <span class="accessability--text">High Contrast</span> </a> </li> <li class="accessability__item"> <a href="#" class="accessability__href accessability__href--negative-contrast"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-eye"></use> </svg> <span class="accessability--text">Negative Contrast</span> </a> </li> <li class="accessability__item"> <a href="#" class="accessability__href accessability__href--underLine"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-link"></use> </svg> <span class="accessability--text">Links Underline</span> </a> </li> <li class="accessability__item"> <a href="#" class="accessability__href accessability__href--font-readable"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-text-color"></use> </svg> <span class="accessability--text">Readable Font</span> </a> </li> <li class="accessability__item"> <a href="#" class="accessability__href accessability__href--reset"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-reload"></use> </svg> <span class="accessability--text">Reset</span> </a> </li> </ul> </div> </nav>';
-         document.querySelector(selector).innerHTML = htmlTemplate;
-         cb();
+      markup = {
+         wrapper: '<nav class="accessability"><div class="accessability__link"> <svg class="accessability__link--icon"> <use xlink:href="sprite.svg#icon-accessibility"></use> </svg> </div> <div class="accessability__main"> <h2 class="accessability__title"> Accessibility Tools </h2> <ul class="accessability__items">%items%</ul> </div> </nav>',
+         fontIncrease: '<li class="accessability__item"><a href="#" class="accessability__href accessability__href--increase"><svg class="accessability--icon"><use xlink:href="sprite.svg#icon-zoom-in"></use></svg><span class="accessability--text">Increase Text</span></a></li>',
+         fontDecrease: '<li class="accessability__item"> <a href="#" class="accessability__href accessability__href--decrease"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-zoom-out"></use> </svg> <span class="accessability--text">Decrease Text</span> </a> </li>',
+         highContrast: '<li class="accessability__item"> <a href="#" class="accessability__href accessability__href--high-contrast"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-contrast"></use> </svg> <span class="accessability--text">High Contrast</span> </a> </li>',
+         negativeContrast: '<li class="accessability__item"> <a href="#" class="accessability__href accessability__href--negative-contrast"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-eye"></use> </svg> <span class="accessability--text">Negative Contrast</span> </a> </li>',
+         linkUnderLine: '<li class="accessability__item"> <a href="#" class="accessability__href accessability__href--underLine"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-link"></use> </svg> <span class="accessability--text">Links Underline</span> </a> </li>',
+         fontReadable: '<li class="accessability__item"> <a href="#" class="accessability__href accessability__href--font-readable"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-text-color"></use> </svg> <span class="accessability--text">Readable Font</span> </a> </li>',
+         readGuide: ' <li class="accessability__item"> <a href="#" class="accessability__href accessability__href--read-guide"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-reload"></use> </svg> <span class="accessability--text">Read Guide</span> </a> </li>',
       }
+
+      itemList = '';
+
+      for (var key in settings) {
+         if (markup.hasOwnProperty(key) && settings[key] == true) {
+            itemList += markup[key];
+         }
+      }
+
+      markup.wrapper = markup.wrapper.replace('%items%', itemList);
+
+
+      // settings.fontIncreaseWrapper == true ? itemList += fontIncreaseMarkup : '';
+
+      document.querySelector(selector).innerHTML = markup.wrapper;
+      // document.querySelector(DOMStrings.accessability__items).innerHTML += itemList;
    }
 
-})();
 
-var controller = (function (UI) {
 
-   "use strict";
 
-   function Accessibility() {
 
-      // return new Accessibility(selector, options);
+
+
+
+   //////////////////////////////////////////////////////////////////////////
+   /////////////////////// CONTROLLER
+
+
+
+   function ACC() {
+
+      // return new ACC(selector, options);
    }
 
-   // ADD VERSION 
-   Accessibility.version = '1.0.0';
+
+
+	/**
+	 * Attaches to an internal event.
+	 * @protected
+	 * @param {HTMLElement} element - The event source.
+	 * @param {String} event - The event name.
+	 * @param {Function} listener - The event handler to attach.
+	 * @param {Boolean} capture - Wether the event should be handled at the capturing phase or not.
+	 */
+   ACC.prototype.on = function (element, event, listener, capture) {
+      if (element) {
+         if (element.addEventListener) {
+            element.addEventListener(event, listener, capture);
+         } else if (element.attachEvent) {
+            element.attachEvent('on' + event, listener);
+         }
+      }
+   };
+
+
+   /**
+    * @public
+    */
+   ACC.version = '1.0.0';
 
    /**
    * Default options for the accessability.
    * @public
    */
-   Accessibility.options = {
+   ACC.prototype.options = {
       fontSize: '100%',
-      readableFont: '',
-      headingHighlight: false,
-      linkHighlight: false,
+      readableFont: false,
+
 
       zooming: false,
       letterSpacing: false,
       wordSpacing: false,
-      increaseCursor: false
+      increaseCursor: false,
+
+      // CONTROL SHOW AND HIDE ELEMENTS
+      fontIncrease: false,
+      fontDecrease: false,
+      headingHighlight: false,
+      linkHighlight: false,
+      linkUnderLine: false,
+      highContrast: false,
+      negativeContrast: false,
+      readGuide: false
+
    }
 
    // GET DOM SELECTOR
-   var DOMselector = UI.getDomStrings();
+   var DOMselector = DOMStrings;
 
+   // SETUP EVENT LISTENER
+   ACC.prototype.setupEventListener = function () {
+
+      if (this.options.fontSize) {
+         // FONT RESIZE EVENT         
+         console.log(this)
+         this.on(_$(DOMselector.fontIncrease), 'click', fontResize.bind(null, this.options.fontSize, 'increase'))
+         this.on(_$(DOMselector.fontDecrease), 'click', fontResize.bind(null, this.options.fontSize, 'decrease'))
+      }
+
+      // LINK UNDERLINE
+      if (this.options.linkUnderLine) {
+         this.on(_$(DOMselector.fontUnderLine), 'click', linkUnderline);
+      }
+
+      // FONT READABLE
+      if (this.options.fontReadable) {
+         this.on(_$(DOMselector.fontReadable), 'click', readableFont);
+      }
+
+
+      // NEGATIVE CONTRAST
+      if (this.options.negativeContrast) {
+         this.on(_$(DOMselector.negativeContrast), 'click', negativeContrast);
+      }
+
+      // HIGH CONTRAST
+      if (this.options.highContrast) {
+         this.on(_$(DOMselector.highContrast), 'click', highContrast);
+      }
+
+      // READ GUIDE LINE
+      if (this.options.readGuide) {
+         this.on(_$(DOMselector.readGuide), 'click', readGuide);
+      }
+      // RESET
+      // _$(DOMselector.reset).addEventListener('click', reset);
+
+      // MENU TOGGLE FUNCTION
+      // _$(DOMselector.accessability__link).addEventListener('click', function () {
+      //    _$(DOMselector.accessability__main).classList.toggle('rightPosition');
+      //    this.classList.toggle('rightPosition-link');
+      // })
+   }
 
    /** Functionalities
  
@@ -100,7 +211,15 @@ var controller = (function (UI) {
    •	Reset 
    */
 
-   // current font index
+
+
+
+   /**
+    * Attaches to an internal event.
+    * @protected
+    * @param {string} size - The font size.
+    * @variable {number} fontIndex - to habdle toggle between font sizes
+    */
    var fontIndex = 0;
    var fontResize = function (size, type) {
       // font size ['2rem', ['3rem']]
@@ -129,7 +248,7 @@ var controller = (function (UI) {
          }
 
          // html render 
-         document.querySelector(DOMselector.html).style.fontSize = fontSize[fontIndex];
+         _$(DOMselector.html).style.fontSize = fontSize[fontIndex];
 
       } else if (typeof fontSize === 'string') { // if the font size is just one size 
          /**
@@ -142,32 +261,35 @@ var controller = (function (UI) {
              * 
              * @HTML render
              */
-            document.querySelector(DOMselector.html).style.fontSize = fontSize;
+            _$(DOMselector.html).style.fontSize = fontSize;
 
          } else {
             /**
              * 
              * @HTML render
              */
-            document.querySelector(DOMselector.html).style.fontSize = '100%';
+            _$(DOMselector.html).style.fontSize = '100%';
          }
       }
    }
 
    var linkUnderline = function (style) {
-      document.querySelector(DOMselector.body).classList.toggle(DOMselector.underLineClass);
+      _$(DOMselector.body).classList.toggle(DOMselector.underLineClass);
    }
 
    var headingHighlight = function (style) {
-      document.querySelector('head').appendChild(style);
+      _$('head').appendChild(style);
    }
 
    var readableFont = function () {
-      document.querySelector(DOMselector.body).style.fontFamily = Accessibility.options.readableFont
+      _$(DOMselector.body).classList.toggle(DOMStrings.fontReadableClass)
    }
 
-   var readSpeaker = function () {
-
+   var readGuide = function () {
+      _$(DOMStrings.readGuideClass).classList.toggle('show');
+      window.onmousemove = function(e){
+         _$(DOMselector.readGuideClass).style.top = e.y + 'px';
+       }
    }
 
    var increaseCursor = function () {
@@ -175,32 +297,25 @@ var controller = (function (UI) {
    }
 
    var negativeContrast = function () {
-      document.querySelector(DOMselector.body).classList.toggle(DOMselector.nigativeContrastClass);
+      _$(DOMselector.body).classList.toggle(DOMselector.nigativeContrastClass);
    }
 
    var highContrast = function () {
-      document.querySelector(DOMselector.body).classList.toggle(DOMselector.highContrastClass);
+      _$(DOMselector.body).classList.toggle(DOMselector.highContrastClass);
    }
 
    var reset = function () {
-      // REMOVE CLASSES FROM 
-      // var classes =  '"'+     DOMselector.highContrastClass + '", ' + 
-      //               '"' + DOMselector.nigativeContrastClass + '", ' +
-      //               '"' + DOMselector.underLineClass + '", ' +
-      //               '"' + DOMselector.fontReadableClass + '"'
-      //               classes = classes.replace(/\./g,'')
-
-                   
-      document.querySelector(DOMselector.body).className = ''
-
-      // RESET FONT SIZE
-      document.querySelector(DOMselector.html).removeAttribute('style')
+      _$(DOMselector.body).className = ''
    }
 
 
    /// HELPERS FUNCTIONS
 
-   // =>  extend object by merge them 
+   /**
+    * to merge between two objects
+    * @param {object} defaultOptions 
+    * @param {object} options 
+    */
    var extendObject = function (defaultOptions, options) {
       for (var key in defaultOptions) {
          if (!options.hasOwnProperty(key)) {
@@ -212,90 +327,62 @@ var controller = (function (UI) {
    }
 
 
-   // SETUP EVENT LISTENER
-   var setupEventListener = function () {
-      // FONT RESIZE EVENT
-      document.querySelector(DOMselector.fontIncrease).addEventListener('click', fontResize.bind(null, Accessibility.options.fontSize, 'increase'));
-      document.querySelector(DOMselector.fontDecrease).addEventListener('click', fontResize.bind(null, Accessibility.options.fontSize, 'decrease'));
-
-      // LINK UNDERLINE
-      document.querySelector(DOMselector.fontUnderLine).addEventListener('click', linkUnderline);
-
-      // FONT READABLE
-      document.querySelector(DOMselector.fontReadable).addEventListener('click', readableFont);
-
-
-      // NEGATIVE CONTRAST
-      document.querySelector(DOMselector.negativeContrast).addEventListener('click', negativeContrast);
-
-      // HIGH CONTRAST
-      document.querySelector(DOMselector.highContrast).addEventListener('click', highContrast);
-
-      // RESET
-      document.querySelector(DOMselector.reset).addEventListener('click', reset);
-
-      // MENU TOGGLE FUNCTION
-      document.querySelector(DOMselector.accessability__link).addEventListener('click', function () {
-         document.querySelector(DOMselector.accessability__main).classList.toggle('rightPosition');
-         this.classList.toggle('rightPosition-link');
-      })
+   /**
+    * @param {HTMLElement} selector 
+    */
+   var _$ = function (selector) {
+      return document.querySelector(selector);
    }
 
    // RENDER THE HTML TEMPLATE FOR ACCESSABILITY TOOL
-   var setupHtmlRender = function (selector) {
-      UI.htmlRender(selector, function () {
-         // Fire events
-         setupEventListener();
-      })
+   ACC.prototype.initialize = function (selector) {
+      htmlRender(selector, this.options);
+
+      this.setupEventListener();
    }
 
-   // setupEventListener();
 
+   /**
+   * init the function with passed params.
+   * @public
+   */
+   ACC.prototype.init = function (selector, options) {
+      var ele, options;
+      ele = _$(selector);
 
-   // define the tool in global level at window object
-   // so we can access the tool direct from window 
-   // define $accessability as reference name for the tool
-
-   window.accessibility = Accessibility;
-
-
-   // return accessability tool
-   // @return 
-
-   return {
-      /**
-      * init the function with passed params.
-      * @public
-      */
-      init: function (selector, options) {
-         var ele, options;
-         ele = document.querySelector(selector);
-
-         // Check if the selector exist in the DOM
-         if (!ele) {
-            throw Error('Invalid Selector');
-         }
-
-         /**
-         * Current options set by the caller including defaults.
-         * @public;
-         */
-         options = options;
-         if (typeof options !== "object") {
-            throw Error('Invalid Options! Options must be an object');
-         }
-         Accessibility.options = extendObject(Accessibility.options, options);
-
-         // Render HTML Template
-         setupHtmlRender(selector);
+      // Check if the selector exist in the DOM
+      if (!ele) {
+         throw Error('Invalid Selector');
       }
-   };
+
+      /**
+      * Current options set by the caller including defaults.
+      * @public;
+      */
+      options = options;
+      if (typeof options !== "object") {
+         throw Error('Invalid Options! Options must be an object');
+      }
+
+      this.options = extendObject(this.options, options);
+
+      // Render HTML Template
+      this.initialize(selector);
+   }
+
+   window.ACC = ACC.prototype;
 
 
-})(UI);
+})();
 
 
-controller.init('#app', {
+ACC.init('#app', {
    fontSize: '20px',
-   readableFont: 'fantasy'
+   fontIncrease: true,
+   fontDecrease: true,
+   highContrast: true,
+   negativeContrast: false,
+   linkUnderLine: false,
+   fontReadable: false,
+   readGuide: false
 })
