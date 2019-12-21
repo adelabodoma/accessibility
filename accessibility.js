@@ -37,6 +37,7 @@
       highContrast: '.accessability__href--high-contrast',
       negativeContrast: '.accessability__href--negative-contrast',
       readGuide: '.accessability__href--read-guide',
+      highLightLinks: '.accessability__href--hight-light-links',
       reset: '.accessability__href--reset',
 
       // HELPERS CSS CLASSES
@@ -44,7 +45,8 @@
       nigativeContrastClass: 'ACC__NIGATIVECONTRAST',
       highContrastClass: 'ACC__HIGHCONTRAST',
       fontReadableClass: 'ACC__FONTREADABLE',
-      readGuideClass: '.ACC__READGUIDELINE'
+      readGuideClass: '.ACC__READGUIDELINE',
+      highLightLinksClass: 'ACC__HIGHLIGHTLINKD'
 
 
    };
@@ -61,6 +63,8 @@
          linkUnderLine: '<li class="accessability__item"> <a href="#" class="accessability__href accessability__href--underLine"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-link"></use> </svg> <span class="accessability--text">Links Underline</span> </a> </li>',
          fontReadable: '<li class="accessability__item"> <a href="#" class="accessability__href accessability__href--font-readable"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-text-color"></use> </svg> <span class="accessability--text">Readable Font</span> </a> </li>',
          readGuide: ' <li class="accessability__item"> <a href="#" class="accessability__href accessability__href--read-guide"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-reload"></use> </svg> <span class="accessability--text">Read Guide</span> </a> </li>',
+         highLightLinks: '<li class="accessability__item"> <a href="#" class="accessability__href accessability__href--hight-light-links"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-text-color"></use> </svg> <span class="accessability--text">High Light Links</span> </a> </li>',
+         reset: '<li class="accessability__item"> <a href="#" class="accessability__href accessability__href--reset"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-reload"></use> </svg> <span class="accessability--text">Reset</span> </a> </li>'
       }
 
       itemList = '';
@@ -71,13 +75,11 @@
          }
       }
 
+      // Append Reset 
+      itemList += markup.reset
+
       markup.wrapper = markup.wrapper.replace('%items%', itemList);
-
-
-      // settings.fontIncreaseWrapper == true ? itemList += fontIncreaseMarkup : '';
-
-      document.querySelector(selector).innerHTML = markup.wrapper;
-      // document.querySelector(DOMStrings.accessability__items).innerHTML += itemList;
+     _$(selector).innerHTML = markup.wrapper;
    }
 
 
@@ -187,14 +189,19 @@
       if (this.options.readGuide) {
          this.on(_$(DOMselector.readGuide), 'click', readGuide);
       }
+
+      // HIGHT LIGHT LINKS
+      if (this.options.highLightLinks) {
+         this.on(_$(DOMselector.highLightLinks), 'click', highLightLinks);
+      }
       // RESET
-      // _$(DOMselector.reset).addEventListener('click', reset);
+      _$(DOMselector.reset).addEventListener('click', reset);
 
       // MENU TOGGLE FUNCTION
-      // _$(DOMselector.accessability__link).addEventListener('click', function () {
-      //    _$(DOMselector.accessability__main).classList.toggle('rightPosition');
-      //    this.classList.toggle('rightPosition-link');
-      // })
+      _$(DOMselector.accessability__link).addEventListener('click', function () {
+         _$(DOMselector.accessability__main).classList.toggle('rightPosition');
+         this.classList.toggle('rightPosition-link');
+      });
    }
 
    /** Functionalities
@@ -222,8 +229,10 @@
     */
    var fontIndex = 0;
    var fontResize = function (size, type) {
-      // font size ['2rem', ['3rem']]
-      var fontSize = size;
+      var fontSize;
+      fontSize = size;
+
+
 
       // check if size is an array not single size
       if (typeof fontSize === 'object' && Array.isArray(fontSize)) {
@@ -281,15 +290,21 @@
       _$('head').appendChild(style);
    }
 
+
+   var highLightLinks = function () {
+      _$('body').classList.toggle(DOMStrings.highLightLinksClass);
+   }
+
+
    var readableFont = function () {
       _$(DOMselector.body).classList.toggle(DOMStrings.fontReadableClass)
    }
 
    var readGuide = function () {
       _$(DOMStrings.readGuideClass).classList.toggle('show');
-      window.onmousemove = function(e){
+      window.onmousemove = function (e) {
          _$(DOMselector.readGuideClass).style.top = e.y + 'px';
-       }
+      }
    }
 
    var increaseCursor = function () {
@@ -305,7 +320,12 @@
    }
 
    var reset = function () {
-      _$(DOMselector.body).className = ''
+      Array.from(_$(DOMselector.body).classList).forEach(function(ele){
+         if (ele.indexOf('ACC__') > -1) {
+            _$(DOMselector.body).classList.remove(ele);
+         }
+      });
+      _$(DOMStrings.html).style.fontSize = ACC.prototype.options.fontSize[0];
    }
 
 
@@ -347,7 +367,7 @@
    * @public
    */
    ACC.prototype.init = function (selector, options) {
-      var ele, options;
+      var ele, options, elem, defaultSize
       ele = _$(selector);
 
       // Check if the selector exist in the DOM
@@ -364,7 +384,20 @@
          throw Error('Invalid Options! Options must be an object');
       }
 
+      if (typeof options.fontSize !== "object" && !Array.isArray(options.fontSize)) {
+         throw Error('Invalid FontSize! FontSize must be an Array');
+      }
       this.options = extendObject(this.options, options);
+      /**
+       *  GET DEFAULT FONT SIZE TO RESET IN CASE NON SIZES
+       */
+      elem = _$("html");
+      defaultSize = window.getComputedStyle(elem, null).getPropertyValue("font-size");
+
+      /**
+       * APPEND DEFAULT SIZE TO SIZE ARRAY
+       */
+      this.options.fontSize.unshift(defaultSize);
 
       // Render HTML Template
       this.initialize(selector);
@@ -377,12 +410,13 @@
 
 
 ACC.init('#app', {
-   fontSize: '20px',
+   fontSize: ['20px'],
    fontIncrease: true,
    fontDecrease: true,
    highContrast: true,
-   negativeContrast: false,
+   negativeContrast: true,
    linkUnderLine: false,
-   fontReadable: false,
+   highLightLinks: true,
+   fontReadable: true,
    readGuide: false
 })

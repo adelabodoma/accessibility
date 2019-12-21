@@ -40,7 +40,8 @@ body {
         min-height: 300px;
         line-height: 1.4;
         z-index: 999999999;
-        background-color: #fff
+        background-color: #fff;
+        border: 1px solid #ccc;
     }
 
     &__title {
@@ -58,9 +59,11 @@ body {
     }
 
     &__item {
+        background-color: #fff;
     }
 
     &__href {
+        background-color: #fff;
         text-decoration: none;
         color: #333;
         padding: 10px 15px;
@@ -105,168 +108,93 @@ a {
 //////////////////////// NIGATIVE CONTRAST
 
 body.ACC__NIGATIVECONTRAST,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) {
+body.ACC__NIGATIVECONTRAST * {
     background: #000 !important;
-    color: #ffffff !important
+    color: #fff !important
 }
 
 body.ACC__NIGATIVECONTRAST a,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) a,
 body.ACC__NIGATIVECONTRAST b,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) b,
 body.ACC__NIGATIVECONTRAST blockquote,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) blockquote,
 body.ACC__NIGATIVECONTRAST button,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) button,
 body.ACC__NIGATIVECONTRAST canvas,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) canvas,
 body.ACC__NIGATIVECONTRAST caption,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) caption,
 body.ACC__NIGATIVECONTRAST center,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) center,
 body.ACC__NIGATIVECONTRAST cite,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) cite,
 body.ACC__NIGATIVECONTRAST code,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) code,
 body.ACC__NIGATIVECONTRAST col,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) col,
 body.ACC__NIGATIVECONTRAST colgroup,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) colgroup,
 body.ACC__NIGATIVECONTRAST dd,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) dd,
 body.ACC__NIGATIVECONTRAST details,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) details,
 body.ACC__NIGATIVECONTRAST dfn,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) dfn,
 body.ACC__NIGATIVECONTRAST dir,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) dir,
 body.ACC__NIGATIVECONTRAST div,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) div,
 body.ACC__NIGATIVECONTRAST dl,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) dl,
 body.ACC__NIGATIVECONTRAST dt,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) dt,
 body.ACC__NIGATIVECONTRAST em,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) em,
 body.ACC__NIGATIVECONTRAST embed,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) embed,
 body.ACC__NIGATIVECONTRAST fieldset,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) fieldset,
 body.ACC__NIGATIVECONTRAST figcaption,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) figcaption,
 body.ACC__NIGATIVECONTRAST figure,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) figure,
 body.ACC__NIGATIVECONTRAST font,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) font,
 body.ACC__NIGATIVECONTRAST footer,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) footer,
 body.ACC__NIGATIVECONTRAST form,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) form,
 body.ACC__NIGATIVECONTRAST header,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) header,
 body.ACC__NIGATIVECONTRAST i,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) i,
 body.ACC__NIGATIVECONTRAST iframe,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) iframe,
 body.ACC__NIGATIVECONTRAST img,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) img,
 body.ACC__NIGATIVECONTRAST input,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) input,
 body.ACC__NIGATIVECONTRAST kbd,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) kbd,
 body.ACC__NIGATIVECONTRAST label,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) label,
 body.ACC__NIGATIVECONTRAST legend,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) legend,
 body.ACC__NIGATIVECONTRAST li,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) li,
 body.ACC__NIGATIVECONTRAST mark,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) mark,
 body.ACC__NIGATIVECONTRAST menu,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) menu,
 body.ACC__NIGATIVECONTRAST meter,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) meter,
 body.ACC__NIGATIVECONTRAST nav,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) nav,
 body.ACC__NIGATIVECONTRAST nobr,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) nobr,
 body.ACC__NIGATIVECONTRAST object,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) object,
 body.ACC__NIGATIVECONTRAST ol,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) ol,
 body.ACC__NIGATIVECONTRAST option,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) option,
 body.ACC__NIGATIVECONTRAST pre,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) pre,
 body.ACC__NIGATIVECONTRAST progress,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) progress,
 body.ACC__NIGATIVECONTRAST q,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) q,
 body.ACC__NIGATIVECONTRAST s,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) s,
 body.ACC__NIGATIVECONTRAST section,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) section,
 body.ACC__NIGATIVECONTRAST select,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) select,
 body.ACC__NIGATIVECONTRAST small,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) small,
 body.ACC__NIGATIVECONTRAST span,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) span,
 body.ACC__NIGATIVECONTRAST strike,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) strike,
 body.ACC__NIGATIVECONTRAST strong,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) strong,
 body.ACC__NIGATIVECONTRAST sub,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) sub,
 body.ACC__NIGATIVECONTRAST summary,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) summary,
 body.ACC__NIGATIVECONTRAST sup,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) sup,
 body.ACC__NIGATIVECONTRAST table,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) table,
 body.ACC__NIGATIVECONTRAST td,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) td,
 body.ACC__NIGATIVECONTRAST textarea,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) textarea,
 body.ACC__NIGATIVECONTRAST th,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) th,
 body.ACC__NIGATIVECONTRAST time,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) time,
 body.ACC__NIGATIVECONTRAST tr,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) tr,
 body.ACC__NIGATIVECONTRAST tt,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) tt,
 body.ACC__NIGATIVECONTRAST u,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) u,
 body.ACC__NIGATIVECONTRAST ul,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) ul,
 body.ACC__NIGATIVECONTRAST var,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) var,
 body.ACC__NIGATIVECONTRAST a span,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) a span,
-body.ACC__NIGATIVECONTRAST strong,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) strong {
-    color: yellow !important
+body.ACC__NIGATIVECONTRAST strong
+{    color: yellow !important;
+    fill: yellow !important;
 }
 
 body.ACC__NIGATIVECONTRAST button,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) button,
 body.ACC__NIGATIVECONTRAST input,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) input,
 body.ACC__NIGATIVECONTRAST textarea,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) textarea,
 body.ACC__NIGATIVECONTRAST select,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) select,
 body.ACC__NIGATIVECONTRAST table,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) table,
 body.ACC__NIGATIVECONTRAST td,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) td,
 body.ACC__NIGATIVECONTRAST th,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) th,
 body.ACC__NIGATIVECONTRAST tr,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) tr,
-body.ACC__NIGATIVECONTRAST tt,
-body.ACC__NIGATIVECONTRAST *:not(#pojo-a11y-toolbar) tt {
+body.ACC__NIGATIVECONTRAST tt
+{
     border: 1px solid #ffffff !important
 }
 
@@ -570,7 +498,6 @@ body.ACC__HIGHCONTRAST marquee,
 body.ACC__HIGHCONTRAST menu,
 body.ACC__HIGHCONTRAST meter,
 body.ACC__HIGHCONTRAST multicol,
-body.ACC__HIGHCONTRAST nav:not(#pojo-a11y-toolbar),
 body.ACC__HIGHCONTRAST nobr,
 body.ACC__HIGHCONTRAST object,
 body.ACC__HIGHCONTRAST ol,
@@ -704,7 +631,8 @@ body.ACC__HIGHCONTRAST ul,
 body.ACC__HIGHCONTRAST var,
 body.ACC__HIGHCONTRAST video,
 body.ACC__HIGHCONTRAST xmp {
-    color: white !important
+    color: white !important;
+    fill: white !important;
 }
 
 body.ACC__HIGHCONTRAST abbr,
@@ -725,7 +653,8 @@ body.ACC__HIGHCONTRAST h6 b,
 body.ACC__HIGHCONTRAST h6 strong,
 body.ACC__HIGHCONTRAST strong,
 body.ACC__HIGHCONTRAST strong span {
-    color: yellow !important
+    color: yellow !important;
+    fill: yellow !important;
 }
 
 body.ACC__HIGHCONTRAST address,
@@ -1138,4 +1067,12 @@ body.ACC__FONTREADABLE *:not(i):not(span) {
 
 .ACC__READGUIDELINE.show {
     display: block;
+}
+
+//////////////////////////////////////////////////////////
+//////////////////////// HIGH LIGHT LINKS
+body.ACC__HIGHLIGHTLINKD a{
+    // display: inline-block!important;
+    background-color: #000!important;
+    color: yellow!important;
 }
