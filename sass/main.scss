@@ -37,7 +37,9 @@ body {
         position: fixed;
         right: 0px;
         top: 150px;
-        min-height: 300px;
+        // min-height: 300px;
+        height: 300px;
+        overflow-y: scroll;
         line-height: 1.4;
         z-index: 999999999;
         background-color: #fff;
@@ -1075,4 +1077,37 @@ body.ACC__HIGHLIGHTLINKD a{
     // display: inline-block!important;
     background-color: #000!important;
     color: yellow!important;
+}
+
+//////////////////////////////////////////////////////////
+//////////////////////// LETTER SPACING
+
+.ACC__LETTERSPACING a,
+.ACC__LETTERSPACING p,
+.ACC__LETTERSPACING h1,
+.ACC__LETTERSPACING h2,
+.ACC__LETTERSPACING h3,
+.ACC__LETTERSPACING h4,
+.ACC__LETTERSPACING h5,
+.ACC__LETTERSPACING h6,
+.ACC__LETTERSPACING span,
+.ACC__LETTERSPACING td {
+    letter-spacing: 3px;
+}
+
+
+//////////////////////////////////////////////////////////
+//////////////////////// WORD SPACING
+
+.ACC__WORDSPACING a,
+.ACC__WORDSPACING p,
+.ACC__WORDSPACING h1,
+.ACC__WORDSPACING h2,
+.ACC__WORDSPACING h3,
+.ACC__WORDSPACING h4,
+.ACC__WORDSPACING h5,
+.ACC__WORDSPACING h6,
+.ACC__WORDSPACING span,
+.ACC__WORDSPACING td {
+    word-spacing: 3px;
 }

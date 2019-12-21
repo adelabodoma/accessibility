@@ -38,6 +38,8 @@
       negativeContrast: '.accessability__href--negative-contrast',
       readGuide: '.accessability__href--read-guide',
       highLightLinks: '.accessability__href--hight-light-links',
+      letterSpacing: '.accessability__href--letter-spacing',
+      wordSpacing: '.accessability__href--word-spacing',
       reset: '.accessability__href--reset',
 
       // HELPERS CSS CLASSES
@@ -46,8 +48,9 @@
       highContrastClass: 'ACC__HIGHCONTRAST',
       fontReadableClass: 'ACC__FONTREADABLE',
       readGuideClass: '.ACC__READGUIDELINE',
-      highLightLinksClass: 'ACC__HIGHLIGHTLINKD'
-
+      highLightLinksClass: 'ACC__HIGHLIGHTLINKD',
+      letterSpacingClass: 'ACC__LETTERSPACING',
+      wordSpacingClass: 'ACC__WORDSPACING'
 
    };
 
@@ -62,8 +65,11 @@
          negativeContrast: '<li class="accessability__item"> <a href="#" class="accessability__href accessability__href--negative-contrast"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-eye"></use> </svg> <span class="accessability--text">Negative Contrast</span> </a> </li>',
          linkUnderLine: '<li class="accessability__item"> <a href="#" class="accessability__href accessability__href--underLine"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-link"></use> </svg> <span class="accessability--text">Links Underline</span> </a> </li>',
          fontReadable: '<li class="accessability__item"> <a href="#" class="accessability__href accessability__href--font-readable"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-text-color"></use> </svg> <span class="accessability--text">Readable Font</span> </a> </li>',
-         readGuide: ' <li class="accessability__item"> <a href="#" class="accessability__href accessability__href--read-guide"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-reload"></use> </svg> <span class="accessability--text">Read Guide</span> </a> </li>',
-         highLightLinks: '<li class="accessability__item"> <a href="#" class="accessability__href accessability__href--hight-light-links"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-text-color"></use> </svg> <span class="accessability--text">High Light Links</span> </a> </li>',
+         readGuide: ' <li class="accessability__item"> <a href="#" class="accessability__href accessability__href--read-guide"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-align-top"></use> </svg> <span class="accessability--text">Read Guide</span> </a> </li>',
+         readGuideWrapper: '<div class="ACC__READGUIDELINE"></div>',
+         highLightLinks: '<li class="accessability__item"> <a href="#" class="accessability__href accessability__href--hight-light-links"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-shuffle"></use> </svg> <span class="accessability--text">High Light Links</span> </a> </li>',
+         letterSpacing: '<li class="accessability__item"> <a href="#" class="accessability__href accessability__href--letter-spacing"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-align-horizontal-middle"></use> </svg> <span class="accessability--text">Letter Spacing</span> </a> </li>',
+         wordSpacing: '<li class="accessability__item"> <a href="#" class="accessability__href accessability__href--word-spacing"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-align-horizontal-middle"></use> </svg> <span class="accessability--text">Word Spacing</span> </a> </li>',
          reset: '<li class="accessability__item"> <a href="#" class="accessability__href accessability__href--reset"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-reload"></use> </svg> <span class="accessability--text">Reset</span> </a> </li>'
       }
 
@@ -76,10 +82,11 @@
       }
 
       // Append Reset 
-      itemList += markup.reset
+      itemList += markup.reset;
 
       markup.wrapper = markup.wrapper.replace('%items%', itemList);
-     _$(selector).innerHTML = markup.wrapper;
+      _$(selector).innerHTML = markup.wrapper;
+      // _$(DOMselector.body).appendChild(markup.readGuideWrapper);
    }
 
 
@@ -147,8 +154,9 @@
       linkUnderLine: false,
       highContrast: false,
       negativeContrast: false,
-      readGuide: false
-
+      readGuide: false,
+      letterSpacing: false,
+      wordSpacing: false
    }
 
    // GET DOM SELECTOR
@@ -193,6 +201,16 @@
       // HIGHT LIGHT LINKS
       if (this.options.highLightLinks) {
          this.on(_$(DOMselector.highLightLinks), 'click', highLightLinks);
+      }
+
+      // LETTER SPACING
+      if (this.options.letterSpacing) {
+         this.on(_$(DOMselector.letterSpacing), 'click', letterSpacing);
+      }
+
+      // WORD SPACING
+      if (this.options.wordSpacing) {
+         this.on(_$(DOMselector.wordSpacing), 'click', wordSpacing);
       }
       // RESET
       _$(DOMselector.reset).addEventListener('click', reset);
@@ -319,8 +337,16 @@
       _$(DOMselector.body).classList.toggle(DOMselector.highContrastClass);
    }
 
+   var letterSpacing = function () {
+      _$(DOMselector.body).classList.toggle(DOMselector.letterSpacingClass);
+   }
+
+   var wordSpacing = function () {
+      _$(DOMselector.body).classList.toggle(DOMselector.wordSpacingClass);
+   }
+
    var reset = function () {
-      Array.from(_$(DOMselector.body).classList).forEach(function(ele){
+      Array.from(_$(DOMselector.body).classList).forEach(function (ele) {
          if (ele.indexOf('ACC__') > -1) {
             _$(DOMselector.body).classList.remove(ele);
          }
@@ -410,13 +436,15 @@
 
 
 ACC.init('#app', {
-   fontSize: ['20px'],
+   fontSize: ['20px', '25px', '30px'],
    fontIncrease: true,
    fontDecrease: true,
    highContrast: true,
    negativeContrast: true,
-   linkUnderLine: false,
+   linkUnderLine: true,
    highLightLinks: true,
    fontReadable: true,
-   readGuide: false
+   readGuide: true,
+   letterSpacing: true,
+   wordSpacing: true
 })

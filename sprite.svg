@@ -1,5 +1,13 @@
 <svg aria-hidden="true" style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <defs>
+<symbol id="icon-align-horizontal-middle" viewBox="0 0 20 20">
+<title>align-horizontal-middle</title>
+<path d="M8 10l-3-3v2h-4v2h4v2l3-3zM15 13v-2h4v-2h-4v-2l-3 3 3 3zM10 18c0.553 0 1-0.049 1-0.6v-14.8c0-0.553-0.447-0.6-1-0.6-0.552 0-1 0.047-1 0.6v14.8c0 0.551 0.448 0.6 1 0.6z"></path>
+</symbol>
+<symbol id="icon-align-top" viewBox="0 0 20 20">
+<title>align-top</title>
+<path d="M10 6l-3 3h2v8h2v-8h2l-3-3zM18 4c0-0.553-0.048-1-0.6-1h-14.8c-0.552 0-0.6 0.447-0.6 1s0.048 1 0.6 1h14.8c0.552 0 0.6-0.447 0.6-1z"></path>
+</symbol>
 <symbol id="icon-reload" viewBox="0 0 32 32">
 <title>reload</title>
 <path d="M24 18c0 4.41-3.586 8-8 8s-8-3.59-8-8 3.586-8 8-8l2.359 0.027-1.164 1.164 2.828 2.828 6.012-6.019-6.012-6-2.828 2.828 1.18 1.172h-2.375c-6.625 0-12 5.371-12 12s5.375 12 12 12 12-5.371 12-12h-4z"></path>
@@ -30,9 +38,29 @@
 <title>contrast</title>
 <path d="M16 0c-8.837 0-16 7.163-16 16s7.163 16 16 16 16-7.163 16-16-7.163-16-16-16zM4 16c0-6.627 5.373-12 12-12v24c-6.627 0-12-5.373-12-12z"></path>
 </symbol>
+<symbol id="icon-shuffle" viewBox="0 0 32 32">
+<title>shuffle</title>
+<path d="M24 22h-3.172l-5-5 5-5h3.172v5l7-7-7-7v5h-4c-0.53 0-1.039 0.211-1.414 0.586l-5.586 5.586-5.586-5.586c-0.375-0.375-0.884-0.586-1.414-0.586h-6v4h5.172l5 5-5 5h-5.172v4h6c0.53 0 1.039-0.211 1.414-0.586l5.586-5.586 5.586 5.586c0.375 0.375 0.884 0.586 1.414 0.586h4v5l7-7-7-7v5z"></path>
+</symbol>
 <symbol id="icon-text-color" viewBox="0 0 32 32">
 <title>text-color</title>
 <path d="M10.063 26l1.8-6h8.274l1.8 6h3.551l-6-20h-6.976l-6 20h3.551zM14.863 10h2.274l1.8 6h-5.874l1.8-6z"></path>
+</symbol>
+<symbol id="icon-paragraph-left" viewBox="0 0 32 32">
+<title>paragraph-left</title>
+<path d="M0 2h32v4h-32zM0 8h20v4h-20zM0 20h20v4h-20zM0 14h32v4h-32zM0 26h32v4h-32z"></path>
+</symbol>
+<symbol id="icon-paragraph-center" viewBox="0 0 32 32">
+<title>paragraph-center</title>
+<path d="M0 2h32v4h-32zM6 8h20v4h-20zM6 20h20v4h-20zM0 14h32v4h-32zM0 26h32v4h-32z"></path>
+</symbol>
+<symbol id="icon-paragraph-right" viewBox="0 0 32 32">
+<title>paragraph-right</title>
+<path d="M0 2h32v4h-32zM12 8h20v4h-20zM12 20h20v4h-20zM0 14h32v4h-32zM0 26h32v4h-32z"></path>
+</symbol>
+<symbol id="icon-paragraph-justify" viewBox="0 0 32 32">
+<title>paragraph-justify</title>
+<path d="M0 2h32v4h-32zM0 8h32v4h-32zM0 14h32v4h-32zM0 20h32v4h-32zM0 26h32v4h-32z"></path>
 </symbol>
 </defs>
 </svg>
