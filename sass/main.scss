@@ -1,5 +1,6 @@
 body {
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif;
+    height: 100vh;
 }
 
 .accessability {
@@ -72,6 +73,7 @@ body {
         display: inline-block;
         display: flex;
         align-items: center;
+        cursor: pointer;
     }
 
     &--text {
@@ -93,11 +95,16 @@ body.ACC__UNDERLINECLASS {
 }
 
 .rightPosition {
-    right: -180px;
+    right: -180px!important;
+    left: initial!important;
+    top: 150px!important;
 }
 
 .rightPosition-link {
-    right: 0px;
+    right: 0px!important;
+    // top: 150px!important;
+    // left: initial!important;
+    
 }
 
 a {

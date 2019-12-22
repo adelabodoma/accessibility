@@ -18,7 +18,7 @@
 
 
    //////////////////////////////////////////////////////////////////////////
-   /////////////////////// VIEW 
+   /////////////////////// VIEW
 
    var DOMStrings, htmlRender
    DOMStrings = {
@@ -44,7 +44,7 @@
 
       // HELPERS CSS CLASSES
       underLineClass: 'ACC__UNDERLINECLASS',
-      nigativeContrastClass: 'ACC__NIGATIVECONTRAST',
+      negativeContrastClass: 'ACC__NIGATIVECONTRAST',
       highContrastClass: 'ACC__HIGHCONTRAST',
       fontReadableClass: 'ACC__FONTREADABLE',
       readGuideClass: '.ACC__READGUIDELINE',
@@ -58,19 +58,19 @@
       var htmlTemplate, itemList, fontIncreaseMarkup, fontDecreaseWrapper, markup;
 
       markup = {
-         wrapper: '<nav class="accessability"><div class="accessability__link"> <svg class="accessability__link--icon"> <use xlink:href="sprite.svg#icon-accessibility"></use> </svg> </div> <div class="accessability__main"> <h2 class="accessability__title"> Accessibility Tools </h2> <ul class="accessability__items">%items%</ul> </div> </nav>',
-         fontIncrease: '<li class="accessability__item"><a href="#" class="accessability__href accessability__href--increase"><svg class="accessability--icon"><use xlink:href="sprite.svg#icon-zoom-in"></use></svg><span class="accessability--text">Increase Text</span></a></li>',
-         fontDecrease: '<li class="accessability__item"> <a href="#" class="accessability__href accessability__href--decrease"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-zoom-out"></use> </svg> <span class="accessability--text">Decrease Text</span> </a> </li>',
-         highContrast: '<li class="accessability__item"> <a href="#" class="accessability__href accessability__href--high-contrast"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-contrast"></use> </svg> <span class="accessability--text">High Contrast</span> </a> </li>',
-         negativeContrast: '<li class="accessability__item"> <a href="#" class="accessability__href accessability__href--negative-contrast"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-eye"></use> </svg> <span class="accessability--text">Negative Contrast</span> </a> </li>',
-         linkUnderLine: '<li class="accessability__item"> <a href="#" class="accessability__href accessability__href--underLine"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-link"></use> </svg> <span class="accessability--text">Links Underline</span> </a> </li>',
-         fontReadable: '<li class="accessability__item"> <a href="#" class="accessability__href accessability__href--font-readable"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-text-color"></use> </svg> <span class="accessability--text">Readable Font</span> </a> </li>',
-         readGuide: ' <li class="accessability__item"> <a href="#" class="accessability__href accessability__href--read-guide"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-align-top"></use> </svg> <span class="accessability--text">Read Guide</span> </a> </li>',
+         wrapper: '<nav class="accessability"><div class="accessability__link" draggable="true" id="dragMe"> <svg class="accessability__link--icon"> <use xlink:href="sprite.svg#icon-accessibility"></use> </svg> </div> <div class="accessability__main"> <h2 class="accessability__title"> Accessibility Tools </h2> <ul class="accessability__items">%items%</ul> </div> </nav>',
+         fontIncrease: '<li class="accessability__item"><a class="accessability__href accessability__href--increase"><svg class="accessability--icon"><use xlink:href="sprite.svg#icon-zoom-in"></use></svg><span class="accessability--text">Increase Text</span></a></li>',
+         fontDecrease: '<li class="accessability__item"> <a class="accessability__href accessability__href--decrease"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-zoom-out"></use> </svg> <span class="accessability--text">Decrease Text</span> </a> </li>',
+         highContrast: '<li class="accessability__item"> <a class="accessability__href accessability__href--high-contrast"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-contrast"></use> </svg> <span class="accessability--text">High Contrast</span> </a> </li>',
+         negativeContrast: '<li class="accessability__item"> <a class="accessability__href accessability__href--negative-contrast"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-eye"></use> </svg> <span class="accessability--text">Negative Contrast</span> </a> </li>',
+         linkUnderLine: '<li class="accessability__item"> <a class="accessability__href accessability__href--underLine"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-link"></use> </svg> <span class="accessability--text">Links Underline</span> </a> </li>',
+         fontReadable: '<li class="accessability__item"> <a class="accessability__href accessability__href--font-readable"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-text-color"></use> </svg> <span class="accessability--text">Readable Font</span> </a> </li>',
+         readGuide: ' <li class="accessability__item"> <a class="accessability__href accessability__href--read-guide"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-align-top"></use> </svg> <span class="accessability--text">Read Guide</span> </a> </li>',
          readGuideWrapper: '<div class="ACC__READGUIDELINE"></div>',
-         highLightLinks: '<li class="accessability__item"> <a href="#" class="accessability__href accessability__href--hight-light-links"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-shuffle"></use> </svg> <span class="accessability--text">High Light Links</span> </a> </li>',
-         letterSpacing: '<li class="accessability__item"> <a href="#" class="accessability__href accessability__href--letter-spacing"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-align-horizontal-middle"></use> </svg> <span class="accessability--text">Letter Spacing</span> </a> </li>',
-         wordSpacing: '<li class="accessability__item"> <a href="#" class="accessability__href accessability__href--word-spacing"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-align-horizontal-middle"></use> </svg> <span class="accessability--text">Word Spacing</span> </a> </li>',
-         reset: '<li class="accessability__item"> <a href="#" class="accessability__href accessability__href--reset"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-reload"></use> </svg> <span class="accessability--text">Reset</span> </a> </li>'
+         highLightLinks: '<li class="accessability__item"> <a class="accessability__href accessability__href--hight-light-links"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-shuffle"></use> </svg> <span class="accessability--text">High Light Links</span> </a> </li>',
+         letterSpacing: '<li class="accessability__item"> <a class="accessability__href accessability__href--letter-spacing"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-align-horizontal-middle"></use> </svg> <span class="accessability--text">Letter Spacing</span> </a> </li>',
+         wordSpacing: '<li class="accessability__item"> <a class="accessability__href accessability__href--word-spacing"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-align-horizontal-middle"></use> </svg> <span class="accessability--text">Word Spacing</span> </a> </li>',
+         reset: '<li class="accessability__item"> <a class="accessability__href accessability__href--reset"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-reload"></use> </svg> <span class="accessability--text">Reset</span> </a> </li>'
       }
 
       itemList = '';
@@ -81,12 +81,11 @@
          }
       }
 
-      // Append Reset 
+      // Append Reset
       itemList += markup.reset;
 
       markup.wrapper = markup.wrapper.replace('%items%', itemList);
       _$(selector).innerHTML = markup.wrapper;
-      // _$(DOMselector.body).appendChild(markup.readGuideWrapper);
    }
 
 
@@ -103,19 +102,17 @@
 
    function ACC() {
 
-      // return new ACC(selector, options);
    }
 
 
-
-	/**
-	 * Attaches to an internal event.
-	 * @protected
-	 * @param {HTMLElement} element - The event source.
-	 * @param {String} event - The event name.
-	 * @param {Function} listener - The event handler to attach.
-	 * @param {Boolean} capture - Wether the event should be handled at the capturing phase or not.
-	 */
+   /**
+    * Attaches to an internal event.
+    * @protected
+    * @param {HTMLElement} element - The event source.
+    * @param {String} event - The event name.
+    * @param {Function} listener - The event handler to attach.
+    * @param {Boolean} capture - Wether the event should be handled at the capturing phase or not.
+    */
    ACC.prototype.on = function (element, event, listener, capture) {
       if (element) {
          if (element.addEventListener) {
@@ -155,85 +152,141 @@
       highContrast: false,
       negativeContrast: false,
       readGuide: false,
-      letterSpacing: false,
-      wordSpacing: false
+      drag: false
    }
 
    // GET DOM SELECTOR
-   var DOMselector = DOMStrings;
+   var DOMSelector = DOMStrings;
 
    // SETUP EVENT LISTENER
    ACC.prototype.setupEventListener = function () {
 
       if (this.options.fontSize) {
-         // FONT RESIZE EVENT         
-         console.log(this)
-         this.on(_$(DOMselector.fontIncrease), 'click', fontResize.bind(null, this.options.fontSize, 'increase'))
-         this.on(_$(DOMselector.fontDecrease), 'click', fontResize.bind(null, this.options.fontSize, 'decrease'))
+         // FONT RESIZE EVENT
+         this.on(_$(DOMSelector.fontIncrease), 'click', fontResize.bind(null, this.options.fontSize, 'increase'))
+         this.on(_$(DOMSelector.fontDecrease), 'click', fontResize.bind(null, this.options.fontSize, 'decrease'))
       }
 
       // LINK UNDERLINE
       if (this.options.linkUnderLine) {
-         this.on(_$(DOMselector.fontUnderLine), 'click', linkUnderline);
+         this.on(_$(DOMSelector.fontUnderLine), 'click', linkUnderline);
       }
 
       // FONT READABLE
       if (this.options.fontReadable) {
-         this.on(_$(DOMselector.fontReadable), 'click', readableFont);
+         this.on(_$(DOMSelector.fontReadable), 'click', readableFont);
       }
 
 
       // NEGATIVE CONTRAST
       if (this.options.negativeContrast) {
-         this.on(_$(DOMselector.negativeContrast), 'click', negativeContrast);
+         this.on(_$(DOMSelector.negativeContrast), 'click', negativeContrast);
       }
 
       // HIGH CONTRAST
       if (this.options.highContrast) {
-         this.on(_$(DOMselector.highContrast), 'click', highContrast);
+         this.on(_$(DOMSelector.highContrast), 'click', highContrast);
       }
 
       // READ GUIDE LINE
       if (this.options.readGuide) {
-         this.on(_$(DOMselector.readGuide), 'click', readGuide);
+         this.on(_$(DOMSelector.readGuide), 'click', readGuide);
       }
 
       // HIGHT LIGHT LINKS
       if (this.options.highLightLinks) {
-         this.on(_$(DOMselector.highLightLinks), 'click', highLightLinks);
+         this.on(_$(DOMSelector.highLightLinks), 'click', highLightLinks);
       }
 
       // LETTER SPACING
       if (this.options.letterSpacing) {
-         this.on(_$(DOMselector.letterSpacing), 'click', letterSpacing);
+         this.on(_$(DOMSelector.letterSpacing), 'click', letterSpacing);
       }
 
       // WORD SPACING
       if (this.options.wordSpacing) {
-         this.on(_$(DOMselector.wordSpacing), 'click', wordSpacing);
+         this.on(_$(DOMSelector.wordSpacing), 'click', wordSpacing);
       }
       // RESET
-      _$(DOMselector.reset).addEventListener('click', reset);
+      _$(DOMSelector.reset).addEventListener('click', reset);
 
       // MENU TOGGLE FUNCTION
-      _$(DOMselector.accessability__link).addEventListener('click', function () {
-         _$(DOMselector.accessability__main).classList.toggle('rightPosition');
+      _$(DOMSelector.accessability__link).addEventListener('click', function () {
+         _$(DOMSelector.accessability__main).classList.toggle('rightPosition');
          this.classList.toggle('rightPosition-link');
       });
+
+
+
+
+
+
+
+      /////////////////////////////////////////////////////////
+      ///////////////////////////// DRAG AND DROP
+      if (this.options.drag) {
+
+         // Internet Explorer
+         var isIE = /*@cc_on!@*/false || !!document.documentMode;
+         if (isIE) {
+            console.info("Please Note that the drag and drop feature doesn't support in your browser!");
+         }   
+         
+
+         var dragStart, dragOver, drop, element, offset, wrapper, style
+
+         element = _$('#dragMe');
+         wrapper = _$('.accessability__main');
+
+         dragStart = function (event) {
+            style = window.getComputedStyle(event.target, null);
+
+            event.dataTransfer.setData("text/plain", (parseInt(style.getPropertyValue("left"), 10) - event.clientX) + ',' + (parseInt(style.getPropertyValue("top"), 10) - event.clientY));
+         }
+
+         dragOver = function (event) {
+            event.preventDefault();
+            return false;
+         }
+
+         drop = function (event) {
+            offset = event.dataTransfer.getData("text/plain").split(',');
+
+            element.style.left = (event.clientX + parseInt(offset[0], 10)) + 'px';
+            element.style.top = (event.clientY + parseInt(offset[1], 10)) + 'px';
+
+
+
+            wrapper.style.top = (event.clientY + parseInt(offset[1], 10)) + 'px';
+            wrapper.style.left = (event.clientX + parseInt(offset[0], 10) + 70) + 'px';
+
+            event.preventDefault();
+            return false;
+         }
+
+         element.addEventListener('dragstart', dragStart, false);
+
+         this.on(_$(DOMStrings.body), 'dragover', dragOver, false);
+         this.on(_$(DOMStrings.body), 'drop', drop, false);
+      }
+
+
+
+
    }
 
    /** Functionalities
  
    •	Highlight Links
-   •	Highlight Heading 
-   •	Font resize 
+   •	Highlight Heading
+   •	Font resize
    •	Readable font
    •	Zooming
-   •	Increase Spacing 
-   •	Reader Guide 
-   •	Read Speaker 
+   •	Increase Spacing
+   •	Reader Guide
+   •	Read Speaker
    •	Increase cursor
-   •	Reset 
+   •	Reset
    */
 
 
@@ -243,10 +296,11 @@
     * Attaches to an internal event.
     * @protected
     * @param {string} size - The font size.
-    * @variable {number} fontIndex - to habdle toggle between font sizes
+    * @variable {number} fontIndex - to handle toggle between font sizes
     */
    var fontIndex = 0;
    var fontResize = function (size, type) {
+
       var fontSize;
       fontSize = size;
 
@@ -268,16 +322,16 @@
             fontIndex = fontSize.length - 1;
          } else if (fontIndex < 0) {
             /**
-             * check if index counter less than 0 ex. -1 
+             * check if index counter less than 0 ex. -1
              * font index will be first index ex. 0
              */
             fontIndex = 0;
          }
 
-         // html render 
-         _$(DOMselector.html).style.fontSize = fontSize[fontIndex];
+         // html render
+         _$(DOMSelector.html).style.fontSize = fontSize[fontIndex];
 
-      } else if (typeof fontSize === 'string') { // if the font size is just one size 
+      } else if (typeof fontSize === 'string') { // if the font size is just one size
          /**
           * check if the user pass a one value so we have to ways
           * @first type === increase
@@ -285,23 +339,25 @@
           */
          if (type === 'increase') {
             /**
-             * 
+             *
              * @HTML render
              */
-            _$(DOMselector.html).style.fontSize = fontSize;
+            _$(DOMSelector.html).style.fontSize = fontSize;
 
          } else {
             /**
-             * 
+             *
              * @HTML render
              */
-            _$(DOMselector.html).style.fontSize = '100%';
+            _$(DOMSelector.html).style.fontSize = '100%';
          }
       }
    }
 
-   var linkUnderline = function (style) {
-      _$(DOMselector.body).classList.toggle(DOMselector.underLineClass);
+   var linkUnderline = function (e) {
+      e.preventDefault();
+
+      _$(DOMSelector.body).classList.toggle(DOMSelector.underLineClass);
    }
 
    var headingHighlight = function (style) {
@@ -309,19 +365,25 @@
    }
 
 
-   var highLightLinks = function () {
+   var highLightLinks = function (e) {
+      e.preventDefault();
+
       _$('body').classList.toggle(DOMStrings.highLightLinksClass);
    }
 
 
-   var readableFont = function () {
-      _$(DOMselector.body).classList.toggle(DOMStrings.fontReadableClass)
+   var readableFont = function (e) {
+      e.preventDefault();
+
+      _$(DOMSelector.body).classList.toggle(DOMStrings.fontReadableClass)
    }
 
-   var readGuide = function () {
+   var readGuide = function (e) {
+      e.preventDefault();
+
       _$(DOMStrings.readGuideClass).classList.toggle('show');
       window.onmousemove = function (e) {
-         _$(DOMselector.readGuideClass).style.top = e.y + 'px';
+         _$(DOMSelector.readGuideClass).style.top = e.y + 'px';
       }
    }
 
@@ -329,26 +391,36 @@
 
    }
 
-   var negativeContrast = function () {
-      _$(DOMselector.body).classList.toggle(DOMselector.nigativeContrastClass);
+   var negativeContrast = function (e) {
+      e.preventDefault();
+
+      _$(DOMSelector.body).classList.toggle(DOMSelector.negativeContrastClass);
    }
 
-   var highContrast = function () {
-      _$(DOMselector.body).classList.toggle(DOMselector.highContrastClass);
+   var highContrast = function (e) {
+      e.preventDefault();
+
+      _$(DOMSelector.body).classList.toggle(DOMSelector.highContrastClass);
    }
 
-   var letterSpacing = function () {
-      _$(DOMselector.body).classList.toggle(DOMselector.letterSpacingClass);
+   var letterSpacing = function (e) {
+      e.preventDefault();
+
+      _$(DOMSelector.body).classList.toggle(DOMSelector.letterSpacingClass);
    }
 
-   var wordSpacing = function () {
-      _$(DOMselector.body).classList.toggle(DOMselector.wordSpacingClass);
+   var wordSpacing = function (e) {
+      e.preventDefault();
+
+      _$(DOMSelector.body).classList.toggle(DOMSelector.wordSpacingClass);
    }
 
-   var reset = function () {
-      Array.from(_$(DOMselector.body).classList).forEach(function (ele) {
+   var reset = function (e) {
+      e.preventDefault();
+
+      Array.from(_$(DOMSelector.body).classList).forEach(function (ele) {
          if (ele.indexOf('ACC__') > -1) {
-            _$(DOMselector.body).classList.remove(ele);
+            _$(DOMSelector.body).classList.remove(ele);
          }
       });
       _$(DOMStrings.html).style.fontSize = ACC.prototype.options.fontSize[0];
@@ -359,8 +431,8 @@
 
    /**
     * to merge between two objects
-    * @param {object} defaultOptions 
-    * @param {object} options 
+    * @param {object} defaultOptions
+    * @param {object} options
     */
    var extendObject = function (defaultOptions, options) {
       for (var key in defaultOptions) {
@@ -374,7 +446,7 @@
 
 
    /**
-    * @param {HTMLElement} selector 
+    * @param {HTMLElement} selector
     */
    var _$ = function (selector) {
       return document.querySelector(selector);
@@ -446,5 +518,28 @@ ACC.init('#app', {
    fontReadable: true,
    readGuide: true,
    letterSpacing: true,
-   wordSpacing: true
+   wordSpacing: true,
+   drag: true
 })
+
+
+
+// INTERFACES
+
+// export interface ACC {
+//    init(selector: string, options: ACCOptions)
+//  }
+
+//  export interface ACCOptions {
+//    fontSize: string[];
+//    fontIncrease: boolean;
+//    fontDecrease: boolean;
+//    highContrast: boolean;
+//    negativeContrast: boolean;
+//    linkUnderLine: boolean;
+//    highLightLinks: boolean;
+//    fontReadable: boolean;
+//    readGuide: boolean;
+//    letterSpacing: boolean;
+//    wordSpacing: boolean;
+//  }
