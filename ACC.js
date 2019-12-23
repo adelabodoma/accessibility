@@ -1,21 +1,20 @@
 /*
  * Accessability JavaScript Library v1.0.0
  * LINK DEVELOPMENT CO.
- * Date: 2019-12-18T21:04Z
+ * Date: 2019-12-20T21:04Z
  * Author: Adel Sadek - Front-end developer at link dev.
  */
 
-
-/**
-* HANDEL UI TASKS
-* RENDER THE HTML
-* CONTROL HIDE AND SHOW ELEMENT
-*/
 
 (function () {
 
    "use strict";
 
+   /**
+   * HANDEL UI TASKS
+   * RENDER THE HTML
+   * CONTROL HIDE AND SHOW ELEMENT
+   */
 
    //////////////////////////////////////////////////////////////////////////
    /////////////////////// VIEW
@@ -58,7 +57,7 @@
       var htmlTemplate, itemList, fontIncreaseMarkup, fontDecreaseWrapper, markup;
 
       markup = {
-         wrapper: '<nav class="accessability"><div class="accessability__link" draggable="true" id="dragMe"> <svg class="accessability__link--icon"> <use xlink:href="sprite.svg#icon-accessibility"></use> </svg> </div> <div class="accessability__main"> <h2 class="accessability__title"> Accessibility Tools </h2> <ul class="accessability__items">%items%</ul> </div> </nav>',
+         wrapper: '<nav class="accessability" id="accessability"><div class="ACC__READGUIDELINE"></div><div class="accessability__link" draggable="true" id="dragMe"> <svg class="accessability__link--icon"> <use xlink:href="sprite.svg#icon-accessibility"></use> </svg> </div> <div class="accessability__main"> <h2 class="accessability__title"> Accessibility Tools </h2> <ul class="accessability__items">%items%</ul> </div> </nav>',
          fontIncrease: '<li class="accessability__item"><a class="accessability__href accessability__href--increase"><svg class="accessability--icon"><use xlink:href="sprite.svg#icon-zoom-in"></use></svg><span class="accessability--text">Increase Text</span></a></li>',
          fontDecrease: '<li class="accessability__item"> <a class="accessability__href accessability__href--decrease"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-zoom-out"></use> </svg> <span class="accessability--text">Decrease Text</span> </a> </li>',
          highContrast: '<li class="accessability__item"> <a class="accessability__href accessability__href--high-contrast"> <svg class="accessability--icon"> <use xlink:href="sprite.svg#icon-contrast"></use> </svg> <span class="accessability--text">High Contrast</span> </a> </li>',
@@ -99,7 +98,7 @@
    /////////////////////// CONTROLLER
 
 
-
+   // CONSTRUCTOR FUNCTION
    function ACC() {
 
    }
@@ -134,7 +133,7 @@
    * @public
    */
    ACC.prototype.options = {
-      fontSize: '100%',
+      fontSize: [],
       readableFont: false,
 
 
@@ -230,8 +229,8 @@
          var isIE = /*@cc_on!@*/false || !!document.documentMode;
          if (isIE) {
             console.info("Please Note that the drag and drop feature doesn't support in your browser!");
-         }   
-         
+         }
+
 
          var dragStart, dragOver, drop, element, offset, wrapper, style
 
@@ -508,18 +507,18 @@
 
 
 ACC.init('#app', {
-   fontSize: ['20px', '25px', '30px'],
+   fontSize: ['50px', '90px', '100px'],
    fontIncrease: true,
    fontDecrease: true,
-   highContrast: true,
-   negativeContrast: true,
-   linkUnderLine: true,
-   highLightLinks: true,
-   fontReadable: true,
-   readGuide: true,
-   letterSpacing: true,
-   wordSpacing: true,
-   drag: true
+   highContrast: false,
+   negativeContrast: false,
+   linkUnderLine: false,
+   highLightLinks: false,
+   fontReadable: false,
+   readGuide: false,
+   letterSpacing: false,
+   wordSpacing: false,
+   drag: false
 })
 
 
