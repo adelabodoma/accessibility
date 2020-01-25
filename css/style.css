@@ -12,6 +12,7 @@ body {
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
     transition: right 750ms cubic-bezier(0.23, 1, 0.32, 1);
     position: fixed;
+    z-index: 9999999999999;
     right: 180px;
     top: 150px;
     cursor: pointer;
@@ -639,7 +640,7 @@ body.ACC__HIGHCONTRAST i,
 body.ACC__HIGHCONTRAST i span,
 body.ACC__HIGHCONTRAST u,
 body.ACC__HIGHCONTRAST u span {
-  color: #FFFF80 !important; }
+  color: #ffff80 !important; }
 
 body.ACC__HIGHCONTRAST dt {
   border-top: thin solid grey !important; }
@@ -680,7 +681,7 @@ body.ACC__HIGHCONTRAST h6 a b,
 body.ACC__HIGHCONTRAST h6 abbr,
 body.ACC__HIGHCONTRAST h6 center,
 body.ACC__HIGHCONTRAST h6 span {
-  color: #40C090 !important; }
+  color: #40c090 !important; }
 
 body.ACC__HIGHCONTRAST img {
   background: #808080 !important;
@@ -754,7 +755,7 @@ body.ACC__HIGHCONTRAST a:link tt,
 body.ACC__HIGHCONTRAST a:link u,
 body.ACC__HIGHCONTRAST a:link var,
 body.ACC__HIGHCONTRAST div#secondaryNav div#documentNavigation ul.navigationTabs li.tabItem {
-  color: #0080FF !important; }
+  color: #0080ff !important; }
 
 body.ACC__HIGHCONTRAST button,
 body.ACC__HIGHCONTRAST input,
@@ -807,7 +808,7 @@ body.ACC__HIGHCONTRAST a:visited tt,
 body.ACC__HIGHCONTRAST a:visited u,
 body.ACC__HIGHCONTRAST a:visited var,
 body.ACC__HIGHCONTRAST div#secondaryNav div#documentNavigation ul.navigationTabs li.tabItem.active {
-  color: #00FFFF !important; }
+  color: #00ffff !important; }
 
 body.ACC__HIGHCONTRAST::selection,
 body.ACC__HIGHCONTRAST::-moz-selection {
@@ -909,17 +910,17 @@ body.ACC__HIGHCONTRAST a:visited:hover var {
 
 body.ACC__HIGHCONTRAST body > input#site + div#wrapper span.mk,
 body.ACC__HIGHCONTRAST body > input#site + div#wrapper span.mk b,
-body.ACC__HIGHCONTRAST input[type=reset] {
+body.ACC__HIGHCONTRAST input[type="reset"] {
   background: #400060 !important;
   background-color: #400060 !important; }
 
 body.ACC__HIGHCONTRAST div[role="button"],
-body.ACC__HIGHCONTRAST input[type=button],
-body.ACC__HIGHCONTRAST input[type=submit] {
+body.ACC__HIGHCONTRAST input[type="button"],
+body.ACC__HIGHCONTRAST input[type="submit"] {
   background: #600040 !important;
   background-color: #600040 !important; }
 
-body.ACC__HIGHCONTRAST input[type=search] {
+body.ACC__HIGHCONTRAST input[type="search"] {
   -webkit-appearance: textfield !important; }
 
 body.ACC__HIGHCONTRAST html button[disabled],
@@ -941,7 +942,7 @@ body.ACC__HIGHCONTRAST a:link.new,
 body.ACC__HIGHCONTRAST a:link.new i,
 body.ACC__HIGHCONTRAST a:link.new b,
 body.ACC__HIGHCONTRAST span.Apple-style-span {
-  color: #FFFF40 !important; }
+  color: #ffff40 !important; }
 
 body.ACC__HIGHCONTRAST body.mediawiki img.tex {
   background: white !important;
@@ -1019,3 +1020,21 @@ body.ACC__HIGHLIGHTLINKD a {
 .ACC__WORDSPACING span,
 .ACC__WORDSPACING td {
   word-spacing: 3px; }
+
+#accessability.accessability * {
+  background-color: #fff !important;
+  color: #000 !important;
+  fill: #000;
+  letter-spacing: 0;
+  word-spacing: 0;
+  text-decoration: none !important; }
+
+#accessability.accessability .accessability__link {
+  background-color: #13d376 !important; }
+
+#accessability.accessability .accessability__link * {
+  background-color: #13d376 !important;
+  fill: #fff; }
+
+#accessability.accessability .ACC__READGUIDELINE {
+  background-color: #000 !important; }
