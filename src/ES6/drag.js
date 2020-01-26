@@ -1,4 +1,9 @@
+import helpers from './helpers';
+import UI from './ui';
+
 class Drag {
+
+    DOMSelector = UI.getDomStrings();
 
     constructor() {
         // Internet Explorer
@@ -8,13 +13,10 @@ class Drag {
             return;
         }
 
+        helpers.on(helpers._$('#dragMe'), 'dragstart', this.dragStart, false);
 
-        const element = _$('#dragMe');
-
-        this.on(_$(element), 'dragstart', dragStart, false);
-
-        this.on(_$(DOMStrings.body), 'dragover', dragOver, false);
-        this.on(_$(DOMStrings.body), 'drop', drop, false);
+        helpers.on(helpers._$(this.DOMSelector.body), 'dragover', this.dragOver, false);
+        helpers.on(helpers._$(this.DOMSelector.body), 'drop', this.drop, false);
 
     }
 
@@ -31,8 +33,10 @@ class Drag {
     }
 
     drop(event) {
-        wrapper = _$('.accessability__main');
-        element = _$('#dragMe');
+        var wrapper, element, offset;
+
+        wrapper = helpers._$('.accessability__main');
+        element = helpers._$('#dragMe');
 
         offset = event.dataTransfer.getData("text/plain").split(',');
 

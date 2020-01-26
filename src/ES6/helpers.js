@@ -45,4 +45,4 @@ class helpers {
 
 }
 
-export default helpers;
+export default new helpers();

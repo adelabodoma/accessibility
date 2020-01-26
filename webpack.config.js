@@ -1,5 +1,4 @@
 const path = require('path');
-debugger
 module.exports = {
   entry: {
     app: [
@@ -9,7 +8,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'app.bundle.js',
+    filename: 'accessibility.js',
   },
   module: {
     rules: [{
@@ -20,6 +19,7 @@ module.exports = {
            presets: ['env', 'stage-0']
         }
     }]
-  }
+  },
+  // watch: true
 }
 

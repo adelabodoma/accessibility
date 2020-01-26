@@ -5,17 +5,10 @@
  * Author: Adel Sadek - Front-end developer at link dev.
  */
 
-
-/**
-* HANDEL UI TASKS
-* RENDER THE HTML
-* CONTROL HIDE AND SHOW ELEMENT
-*/
-
-
 import UI from './ui';
 import settings from './settings';
 import Drag from './drag';
+import helpers from './helpers';
 
 class App {
 
@@ -40,63 +33,58 @@ class App {
 
     if (this.options.fontSize) {
       // FONT RESIZE EVENT
-      this.on(_$(this.DOMSelector.fontIncrease), 'click', fontResize.bind(null, this.options.fontSize, 'increase'))
-      this.on(_$(this.DOMSelector.fontDecrease), 'click', fontResize.bind(null, this.options.fontSize, 'decrease'))
+      helpers.on(helpers._$(this.DOMSelector.fontIncrease), 'click', this.fontResize.bind(this, this.options.fontSize, 'increase'));
+      helpers.on(helpers._$(this.DOMSelector.fontDecrease), 'click', this.fontResize.bind(this, this.options.fontSize, 'decrease'));
     }
 
     // LINK UNDERLINE
     if (this.options.linkUnderLine) {
-      this.on(_$(this.DOMSelector.fontUnderLine), 'click', linkUnderline);
+      helpers.on(helpers._$(this.DOMSelector.fontUnderLine), 'click', this.linkUnderline.bind(this));
     }
 
     // FONT READABLE
     if (this.options.fontReadable) {
-      this.on(_$(this.DOMSelector.fontReadable), 'click', readableFont);
+      helpers.on(helpers._$(this.DOMSelector.fontReadable), 'click', this.readableFont.bind(this));
     }
 
 
     // NEGATIVE CONTRAST
     if (this.options.negativeContrast) {
-      this.on(_$(this.DOMSelector.negativeContrast), 'click', negativeContrast);
+      helpers.on(helpers._$(this.DOMSelector.negativeContrast), 'click', this.negativeContrast.bind(this));
     }
 
     // HIGH CONTRAST
     if (this.options.highContrast) {
-      this.on(_$(this.DOMSelector.highContrast), 'click', highContrast);
+      helpers.on(helpers._$(this.DOMSelector.highContrast), 'click', this.highContrast.bind(this));
     }
 
     // READ GUIDE LINE
     if (this.options.readGuide) {
-      this.on(_$(this.DOMSelector.readGuide), 'click', readGuide);
+      helpers.on(helpers._$(this.DOMSelector.readGuide), 'click', this.readGuide.bind(this));
     }
 
     // HIGHT LIGHT LINKS
     if (this.options.highLightLinks) {
-      this.on(_$(this.DOMSelector.highLightLinks), 'click', highLightLinks);
+      helpers.on(helpers._$(this.DOMSelector.highLightLinks), 'click', this.highLightLinks.bind(this));
     }
 
     // LETTER SPACING
     if (this.options.letterSpacing) {
-      this.on(_$(this.DOMSelector.letterSpacing), 'click', letterSpacing);
+      helpers.on(helpers._$(this.DOMSelector.letterSpacing), 'click', this.letterSpacing.bind(this));
     }
 
     // WORD SPACING
     if (this.options.wordSpacing) {
-      this.on(_$(this.DOMSelector.wordSpacing), 'click', wordSpacing);
+      helpers.on(helpers._$(this.DOMSelector.wordSpacing), 'click', this.wordSpacing.bind(this));
     }
     // RESET
-    _$(this.DOMSelector.reset).addEventListener('click', reset);
+    helpers._$(this.DOMSelector.reset).addEventListener('click', this.reset.bind(this));
 
     // MENU TOGGLE FUNCTION
-    _$(this.DOMSelector.accessability__link).addEventListener('click', function () {
-      _$(this.DOMSelector.accessability__main).classList.toggle('rightPosition');
-      this.classList.toggle('rightPosition-link');
+    helpers._$(this.DOMSelector.accessability__link).addEventListener('click', (e) => {
+      helpers._$(this.DOMSelector.accessability__main).classList.toggle('rightPosition');
+      e.currentTarget.classList.toggle('rightPosition-link');
     });
-
-
-
-
-
 
 
     /////////////////////////////////////////////////////////
@@ -158,7 +146,7 @@ class App {
       }
 
       // html render
-      _$(this.DOMSelector.html).style.fontSize = fontSize[this.fontIndex];
+      helpers._$(this.DOMSelector.html).style.fontSize = fontSize[this.fontIndex];
 
     } else if (typeof fontSize === 'string') { // if the font size is just one size
       /**
@@ -171,14 +159,14 @@ class App {
          *
          * @HTML render
          */
-        _$(this.DOMSelector.html).style.fontSize = fontSize;
+        helpers._$(this.DOMSelector.html).style.fontSize = fontSize;
 
       } else {
         /**
          *
          * @HTML render
          */
-        _$(this.DOMSelector.html).style.fontSize = '100%';
+        helpers._$(this.DOMSelector.html).style.fontSize = '100%';
       }
     }
   }
@@ -186,33 +174,31 @@ class App {
   linkUnderline(e) {
     e.preventDefault();
 
-    _$(this.DOMSelector.body).classList.toggle(this.DOMSelector.underLineClass);
+    helpers._$(this.DOMSelector.body).classList.toggle(this.DOMSelector.underLineClass);
   }
 
   headingHighlight(style) {
-    _$('head').appendChild(style);
+    helpers._$('head').appendChild(style);
   }
-
 
   highLightLinks(e) {
     e.preventDefault();
 
-    _$('body').classList.toggle(DOMStrings.highLightLinksClass);
+    helpers._$('body').classList.toggle(this.DOMSelector.highLightLinksClass);
   }
-
 
   readableFont(e) {
     e.preventDefault();
 
-    _$(this.DOMSelector.body).classList.toggle(DOMStrings.fontReadableClass)
+    helpers._$(this.DOMSelector.body).classList.toggle(this.DOMSelector.fontReadableClass)
   }
 
   readGuide(e) {
     e.preventDefault();
 
-    _$(DOMStrings.readGuideClass).classList.toggle('show');
-    window.onmousemove = function (e) {
-      _$(this.DOMSelector.readGuideClass).style.top = e.y + 'px';
+    helpers._$(this.DOMSelector.readGuideClass).classList.toggle('show');
+    window.onmousemove = (e) => {
+      helpers._$(this.DOMSelector.readGuideClass).style.top = e.y + 'px';
     }
   }
 
@@ -223,38 +209,38 @@ class App {
   negativeContrast(e) {
     e.preventDefault();
 
-    _$(this.DOMSelector.body).classList.toggle(this.DOMSelector.negativeContrastClass);
+    helpers._$(this.DOMSelector.body).classList.toggle(this.DOMSelector.negativeContrastClass);
   }
 
   highContrast(e) {
     e.preventDefault();
 
-    _$(this.DOMSelector.body).classList.toggle(this.DOMSelector.highContrastClass);
+    helpers._$(this.DOMSelector.body).classList.toggle(this.DOMSelector.highContrastClass);
   }
 
   letterSpacing(e) {
     e.preventDefault();
 
-    _$(this.DOMSelector.body).classList.toggle(this.DOMSelector.letterSpacingClass);
+    helpers._$(this.DOMSelector.body).classList.toggle(this.DOMSelector.letterSpacingClass);
   }
 
   wordSpacing(e) {
     e.preventDefault();
 
-    _$(this.DOMSelector.body).classList.toggle(this.DOMSelector.wordSpacingClass);
+    helpers._$(this.DOMSelector.body).classList.toggle(this.DOMSelector.wordSpacingClass);
   }
 
   reset(e) {
     e.preventDefault();
 
-    Array.from(_$(this.DOMSelector.body).classList).forEach((ele) => {
+    Array.from(helpers._$(this.DOMSelector.body).classList).forEach((ele) => {
       if (ele.indexOf('ACC__') > -1) {
-        _$(this.DOMSelector.body).classList.remove(ele);
+        helpers._$(this.DOMSelector.body).classList.remove(ele);
       }
     });
-    _$(DOMStrings.html).style.fontSize = ACC.prototype.options.fontSize[0];
-  }
 
+    helpers._$(this.DOMSelector.html).style.fontSize = this.options.fontSize[0];
+  }
 
   // RENDER THE HTML TEMPLATE FOR ACCESSABILITY TOOL
   initialize(selector) {
@@ -263,14 +249,13 @@ class App {
     this.setupEventListener();
   }
 
-
   /**
   * init the function with passed params.
   * @public
   */
   init(selector, options) {
     var ele, options, elem, defaultSize
-    ele = _$(selector);
+    ele = helpers._$(selector);
 
     // Check if the selector exist in the DOM
     if (!ele) {
@@ -289,11 +274,11 @@ class App {
     if (typeof options.fontSize !== "object" && !Array.isArray(options.fontSize)) {
       throw Error('Invalid FontSize! FontSize must be an Array');
     }
-    this.options = extendObject(this.options, options);
+    this.options = helpers.extendObject(this.options, options);
     /**
      *  GET DEFAULT FONT SIZE TO RESET IN CASE NON SIZES
      */
-    elem = _$("html");
+    elem = helpers._$("html");
     defaultSize = window.getComputedStyle(elem, null).getPropertyValue("font-size");
 
     /**
@@ -305,24 +290,28 @@ class App {
     this.initialize(selector);
   }
 
-  //  window.ACC = ACC.prototype;
-
 }
 
 
+/*
+* check if lib is not in global
+*/
+!window.ACC ? window['ACC'] = new App() : '';
 
-const ACC = new App().init('#app', {
+
+
+ACC.init('#app', {
   fontSize: ['20px', '25px', '30px'],
   fontIncrease: true,
   fontDecrease: true,
-  highContrast: true,
-  negativeContrast: true,
-  linkUnderLine: true,
-  highLightLinks: true,
-  fontReadable: true,
-  readGuide: true,
-  letterSpacing: true,
-  wordSpacing: true,
-  drag: true
+  highContrast: false,
+  negativeContrast: false,
+  linkUnderLine: false,
+  highLightLinks: false,
+  fontReadable: false,
+  readGuide: false,
+  letterSpacing: false,
+  wordSpacing: false,
+  drag: false
 })
 
