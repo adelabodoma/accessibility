@@ -36,7 +36,7 @@ class UI {
    };
 
    htmlRender (selector, settings) {
-      var itemList, markup;
+      let itemList, markup;
 
       markup = {
          wrapper: '<nav class="accessability"><div class="ACC__READGUIDELINE"></div><div class="accessability__link" draggable="true" id="dragMe"> <svg class="accessability__link--icon"> <use xlink:href="sprite.svg#icon-accessibility"></use> </svg> </div> <div class="accessability__main"> <h2 class="accessability__title"> Accessibility Tools </h2> <ul class="accessability__items">%items%</ul> </div> </nav>',
@@ -56,7 +56,7 @@ class UI {
 
       itemList = '';
 
-      for (var key in settings) {
+      for (let key in settings) {
          if (markup.hasOwnProperty(key) && settings[key] == true) {
             itemList += markup[key];
          }
