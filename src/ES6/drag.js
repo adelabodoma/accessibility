@@ -8,7 +8,7 @@ class Drag {
             return;
         }
 
-        
+
         const element = _$('#dragMe');
 
         this.on(_$(element), 'dragstart', dragStart, false);
@@ -19,18 +19,18 @@ class Drag {
     }
 
 
-    dragStart (event) {
+    dragStart(event) {
         const style = window.getComputedStyle(event.target, null);
 
         event.dataTransfer.setData("text/plain", (parseInt(style.getPropertyValue("left"), 10) - event.clientX) + ',' + (parseInt(style.getPropertyValue("top"), 10) - event.clientY));
     }
 
-    dragOver (event) {
+    dragOver(event) {
         event.preventDefault();
         return false;
     }
 
-    drop (event) {
+    drop(event) {
         wrapper = _$('.accessability__main');
         element = _$('#dragMe');
 

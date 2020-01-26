@@ -3,7 +3,7 @@ class UI {
     //////////////////////////////////////////////////////////////////////////
    /////////////////////// HANDLE VIEW
 
-   DOMStrings = {
+   _DOMStrings = {
       body: 'body',
       head: 'head',
       html: 'html',
@@ -69,4 +69,10 @@ class UI {
       markup.wrapper = markup.wrapper.replace('%items%', itemList);
       _$(selector).innerHTML = markup.wrapper;
    }
+
+   getDomStrings(){
+      return this._DOMStrings;
+   }
 }
+
+export default UI;
