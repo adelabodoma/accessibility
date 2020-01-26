@@ -5,6 +5,7 @@
  * Author: Adel Sadek - Front-end developer at link dev.
  */
 
+import css from '../../css/ACC.css';
 import UI from './ui';
 import settings from './settings';
 import Drag from './drag';
@@ -107,9 +108,6 @@ class App {
   •	Increase cursor
   •	Reset
   */
-
-
-
 
   /**
    * Attaches to an internal event.
@@ -292,7 +290,6 @@ class App {
 
 }
 
-
 /*
 * check if lib is not in global
 */
@@ -304,7 +301,7 @@ ACC.init('#app', {
   fontSize: ['20px', '25px', '30px'],
   fontIncrease: true,
   fontDecrease: true,
-  highContrast: false,
+  highContrast: true,
   negativeContrast: false,
   linkUnderLine: false,
   highLightLinks: false,
@@ -312,6 +309,6 @@ ACC.init('#app', {
   readGuide: false,
   letterSpacing: false,
   wordSpacing: false,
-  drag: false
+  drag: true
 })
 

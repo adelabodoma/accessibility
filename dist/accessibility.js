@@ -9690,15 +9690,19 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * Author: Adel Sadek - Front-end developer at link dev.
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
+var _ACC = __webpack_require__(336);
+
+var _ACC2 = _interopRequireDefault(_ACC);
+
 var _ui = __webpack_require__(131);
 
 var _ui2 = _interopRequireDefault(_ui);
 
-var _settings = __webpack_require__(336);
+var _settings = __webpack_require__(340);
 
 var _settings2 = _interopRequireDefault(_settings);
 
-var _drag = __webpack_require__(337);
+var _drag = __webpack_require__(341);
 
 var _drag2 = _interopRequireDefault(_drag);
 
@@ -10030,7 +10034,7 @@ ACC.init('#app', {
   fontSize: ['20px', '25px', '30px'],
   fontIncrease: true,
   fontDecrease: true,
-  highContrast: false,
+  highContrast: true,
   negativeContrast: false,
   linkUnderLine: false,
   highLightLinks: false,
@@ -10038,11 +10042,425 @@ ACC.init('#app', {
   readGuide: false,
   letterSpacing: false,
   wordSpacing: false,
-  drag: false
+  drag: true
 });
 
 /***/ }),
 /* 336 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var api = __webpack_require__(337);
+            var content = __webpack_require__(338);
+
+            content = content.__esModule ? content.default : content;
+
+            if (typeof content === 'string') {
+              content = [[module.i, content, '']];
+            }
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = api(content, options);
+
+var exported = content.locals ? content.locals : {};
+
+
+
+module.exports = exported;
+
+/***/ }),
+/* 337 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var isOldIE = function isOldIE() {
+  var memo;
+  return function memorize() {
+    if (typeof memo === 'undefined') {
+      // Test for IE <= 9 as proposed by Browserhacks
+      // @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
+      // Tests for existence of standard globals is to allow style-loader
+      // to operate correctly into non-standard environments
+      // @see https://github.com/webpack-contrib/style-loader/issues/177
+      memo = Boolean(window && document && document.all && !window.atob);
+    }
+
+    return memo;
+  };
+}();
+
+var getTarget = function getTarget() {
+  var memo = {};
+  return function memorize(target) {
+    if (typeof memo[target] === 'undefined') {
+      var styleTarget = document.querySelector(target); // Special case to return head of iframe instead of iframe itself
+
+      if (window.HTMLIFrameElement && styleTarget instanceof window.HTMLIFrameElement) {
+        try {
+          // This will throw an exception if access to iframe is blocked
+          // due to cross-origin restrictions
+          styleTarget = styleTarget.contentDocument.head;
+        } catch (e) {
+          // istanbul ignore next
+          styleTarget = null;
+        }
+      }
+
+      memo[target] = styleTarget;
+    }
+
+    return memo[target];
+  };
+}();
+
+var stylesInDom = [];
+
+function getIndexByIdentifier(identifier) {
+  var result = -1;
+
+  for (var i = 0; i < stylesInDom.length; i++) {
+    if (stylesInDom[i].identifier === identifier) {
+      result = i;
+      break;
+    }
+  }
+
+  return result;
+}
+
+function modulesToDom(list, options) {
+  var idCountMap = {};
+  var identifiers = [];
+
+  for (var i = 0; i < list.length; i++) {
+    var item = list[i];
+    var id = options.base ? item[0] + options.base : item[0];
+    var count = idCountMap[id] || 0;
+    var identifier = "".concat(id, " ").concat(count);
+    idCountMap[id] = count + 1;
+    var index = getIndexByIdentifier(identifier);
+    var obj = {
+      css: item[1],
+      media: item[2],
+      sourceMap: item[3]
+    };
+
+    if (index !== -1) {
+      stylesInDom[index].references++;
+      stylesInDom[index].updater(obj);
+    } else {
+      stylesInDom.push({
+        identifier: identifier,
+        updater: addStyle(obj, options),
+        references: 1
+      });
+    }
+
+    identifiers.push(identifier);
+  }
+
+  return identifiers;
+}
+
+function insertStyleElement(options) {
+  var style = document.createElement('style');
+  var attributes = options.attributes || {};
+
+  if (typeof attributes.nonce === 'undefined') {
+    var nonce =  true ? __webpack_require__.nc : null;
+
+    if (nonce) {
+      attributes.nonce = nonce;
+    }
+  }
+
+  Object.keys(attributes).forEach(function (key) {
+    style.setAttribute(key, attributes[key]);
+  });
+
+  if (typeof options.insert === 'function') {
+    options.insert(style);
+  } else {
+    var target = getTarget(options.insert || 'head');
+
+    if (!target) {
+      throw new Error("Couldn't find a style target. This probably means that the value for the 'insert' parameter is invalid.");
+    }
+
+    target.appendChild(style);
+  }
+
+  return style;
+}
+
+function removeStyleElement(style) {
+  // istanbul ignore if
+  if (style.parentNode === null) {
+    return false;
+  }
+
+  style.parentNode.removeChild(style);
+}
+/* istanbul ignore next  */
+
+
+var replaceText = function replaceText() {
+  var textStore = [];
+  return function replace(index, replacement) {
+    textStore[index] = replacement;
+    return textStore.filter(Boolean).join('\n');
+  };
+}();
+
+function applyToSingletonTag(style, index, remove, obj) {
+  var css = remove ? '' : obj.media ? "@media ".concat(obj.media, " {").concat(obj.css, "}") : obj.css; // For old IE
+
+  /* istanbul ignore if  */
+
+  if (style.styleSheet) {
+    style.styleSheet.cssText = replaceText(index, css);
+  } else {
+    var cssNode = document.createTextNode(css);
+    var childNodes = style.childNodes;
+
+    if (childNodes[index]) {
+      style.removeChild(childNodes[index]);
+    }
+
+    if (childNodes.length) {
+      style.insertBefore(cssNode, childNodes[index]);
+    } else {
+      style.appendChild(cssNode);
+    }
+  }
+}
+
+function applyToTag(style, options, obj) {
+  var css = obj.css;
+  var media = obj.media;
+  var sourceMap = obj.sourceMap;
+
+  if (media) {
+    style.setAttribute('media', media);
+  } else {
+    style.removeAttribute('media');
+  }
+
+  if (sourceMap && btoa) {
+    css += "\n/*# sourceMappingURL=data:application/json;base64,".concat(btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))), " */");
+  } // For old IE
+
+  /* istanbul ignore if  */
+
+
+  if (style.styleSheet) {
+    style.styleSheet.cssText = css;
+  } else {
+    while (style.firstChild) {
+      style.removeChild(style.firstChild);
+    }
+
+    style.appendChild(document.createTextNode(css));
+  }
+}
+
+var singleton = null;
+var singletonCounter = 0;
+
+function addStyle(obj, options) {
+  var style;
+  var update;
+  var remove;
+
+  if (options.singleton) {
+    var styleIndex = singletonCounter++;
+    style = singleton || (singleton = insertStyleElement(options));
+    update = applyToSingletonTag.bind(null, style, styleIndex, false);
+    remove = applyToSingletonTag.bind(null, style, styleIndex, true);
+  } else {
+    style = insertStyleElement(options);
+    update = applyToTag.bind(null, style, options);
+
+    remove = function remove() {
+      removeStyleElement(style);
+    };
+  }
+
+  update(obj);
+  return function updateStyle(newObj) {
+    if (newObj) {
+      if (newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap) {
+        return;
+      }
+
+      update(obj = newObj);
+    } else {
+      remove();
+    }
+  };
+}
+
+module.exports = function (list, options) {
+  options = options || {}; // Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+  // tags it will allow on a page
+
+  if (!options.singleton && typeof options.singleton !== 'boolean') {
+    options.singleton = isOldIE();
+  }
+
+  list = list || [];
+  var lastIdentifiers = modulesToDom(list, options);
+  return function update(newList) {
+    newList = newList || [];
+
+    if (Object.prototype.toString.call(newList) !== '[object Array]') {
+      return;
+    }
+
+    for (var i = 0; i < lastIdentifiers.length; i++) {
+      var identifier = lastIdentifiers[i];
+      var index = getIndexByIdentifier(identifier);
+      stylesInDom[index].references--;
+    }
+
+    var newLastIdentifiers = modulesToDom(newList, options);
+
+    for (var _i = 0; _i < lastIdentifiers.length; _i++) {
+      var _identifier = lastIdentifiers[_i];
+
+      var _index = getIndexByIdentifier(_identifier);
+
+      if (stylesInDom[_index].references === 0) {
+        stylesInDom[_index].updater();
+
+        stylesInDom.splice(_index, 1);
+      }
+    }
+
+    lastIdentifiers = newLastIdentifiers;
+  };
+};
+
+/***/ }),
+/* 338 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// Imports
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(339);
+exports = ___CSS_LOADER_API_IMPORT___(false);
+// Module
+exports.push([module.i, "body{font-family:-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif;height:100vh}.accessability{position:relative}.accessability__link{display:inline-block;font-size:200%;line-height:0;background-color:#13d376;box-shadow:0 0 10px 0 rgba(0,0,0,0.1);transition:right 750ms cubic-bezier(0.23, 1, 0.32, 1);position:fixed;z-index:9999999999999;right:180px;top:150px;cursor:pointer;width:70px;height:70px;display:flex;align-items:center;justify-content:center}.accessability__link--icon{fill:#fff;width:40px;height:40px}.accessability__main{width:180px;box-shadow:0 0 10px 0 rgba(0,0,0,0.2);transition:right 750ms cubic-bezier(0.23, 1, 0.32, 1);font-size:16px !important;position:fixed;right:0px;top:150px;height:300px;overflow-y:scroll;line-height:1.4;z-index:999999999;background-color:#fff;border:1px solid #ccc}.accessability__title{color:#333;font-size:100%;margin:0;font-weight:bold;padding:10px 15px 0}.accessability__items{list-style:none;margin:0;padding:10px 0}.accessability__item{background-color:#fff}.accessability__href{background-color:#fff;text-decoration:none;color:#333;padding:10px 15px;display:inline-block;display:flex;align-items:center;cursor:pointer}.accessability--text{font-size:80%}.accessability--icon{width:15px;height:15px;margin-right:10px}body.ACC__UNDERLINECLASS a{text-decoration:underline !important}.rightPosition{right:-180px !important;left:initial !important;top:150px !important}.rightPosition-link{right:0px !important}a{text-decoration:none}body.ACC__NIGATIVECONTRAST,body.ACC__NIGATIVECONTRAST *{background:#000 !important;color:#fff !important}body.ACC__NIGATIVECONTRAST a,body.ACC__NIGATIVECONTRAST b,body.ACC__NIGATIVECONTRAST blockquote,body.ACC__NIGATIVECONTRAST button,body.ACC__NIGATIVECONTRAST canvas,body.ACC__NIGATIVECONTRAST caption,body.ACC__NIGATIVECONTRAST center,body.ACC__NIGATIVECONTRAST cite,body.ACC__NIGATIVECONTRAST code,body.ACC__NIGATIVECONTRAST col,body.ACC__NIGATIVECONTRAST colgroup,body.ACC__NIGATIVECONTRAST dd,body.ACC__NIGATIVECONTRAST details,body.ACC__NIGATIVECONTRAST dfn,body.ACC__NIGATIVECONTRAST dir,body.ACC__NIGATIVECONTRAST div,body.ACC__NIGATIVECONTRAST dl,body.ACC__NIGATIVECONTRAST dt,body.ACC__NIGATIVECONTRAST em,body.ACC__NIGATIVECONTRAST embed,body.ACC__NIGATIVECONTRAST fieldset,body.ACC__NIGATIVECONTRAST figcaption,body.ACC__NIGATIVECONTRAST figure,body.ACC__NIGATIVECONTRAST font,body.ACC__NIGATIVECONTRAST footer,body.ACC__NIGATIVECONTRAST form,body.ACC__NIGATIVECONTRAST header,body.ACC__NIGATIVECONTRAST i,body.ACC__NIGATIVECONTRAST iframe,body.ACC__NIGATIVECONTRAST img,body.ACC__NIGATIVECONTRAST input,body.ACC__NIGATIVECONTRAST kbd,body.ACC__NIGATIVECONTRAST label,body.ACC__NIGATIVECONTRAST legend,body.ACC__NIGATIVECONTRAST li,body.ACC__NIGATIVECONTRAST mark,body.ACC__NIGATIVECONTRAST menu,body.ACC__NIGATIVECONTRAST meter,body.ACC__NIGATIVECONTRAST nav,body.ACC__NIGATIVECONTRAST nobr,body.ACC__NIGATIVECONTRAST object,body.ACC__NIGATIVECONTRAST ol,body.ACC__NIGATIVECONTRAST option,body.ACC__NIGATIVECONTRAST pre,body.ACC__NIGATIVECONTRAST progress,body.ACC__NIGATIVECONTRAST q,body.ACC__NIGATIVECONTRAST s,body.ACC__NIGATIVECONTRAST section,body.ACC__NIGATIVECONTRAST select,body.ACC__NIGATIVECONTRAST small,body.ACC__NIGATIVECONTRAST span,body.ACC__NIGATIVECONTRAST strike,body.ACC__NIGATIVECONTRAST strong,body.ACC__NIGATIVECONTRAST sub,body.ACC__NIGATIVECONTRAST summary,body.ACC__NIGATIVECONTRAST sup,body.ACC__NIGATIVECONTRAST table,body.ACC__NIGATIVECONTRAST td,body.ACC__NIGATIVECONTRAST textarea,body.ACC__NIGATIVECONTRAST th,body.ACC__NIGATIVECONTRAST time,body.ACC__NIGATIVECONTRAST tr,body.ACC__NIGATIVECONTRAST tt,body.ACC__NIGATIVECONTRAST u,body.ACC__NIGATIVECONTRAST ul,body.ACC__NIGATIVECONTRAST var,body.ACC__NIGATIVECONTRAST a span,body.ACC__NIGATIVECONTRAST strong{color:yellow !important;fill:yellow !important}body.ACC__NIGATIVECONTRAST button,body.ACC__NIGATIVECONTRAST input,body.ACC__NIGATIVECONTRAST textarea,body.ACC__NIGATIVECONTRAST select,body.ACC__NIGATIVECONTRAST table,body.ACC__NIGATIVECONTRAST td,body.ACC__NIGATIVECONTRAST th,body.ACC__NIGATIVECONTRAST tr,body.ACC__NIGATIVECONTRAST tt{border:1px solid #ffffff !important}body.ACC__NIGATIVECONTRAST div#gmap,body.ACC__NIGATIVECONTRAST div#gmap *{background:initial !important}body.ACC__HIGHCONTRAST .placebo{line-height:normal}body.ACC__HIGHCONTRAST *{-webkit-box-shadow:none !important;box-shadow:none !important}body.ACC__HIGHCONTRAST a,body.ACC__HIGHCONTRAST abbr,body.ACC__HIGHCONTRAST acronym,body.ACC__HIGHCONTRAST address,body.ACC__HIGHCONTRAST article,body.ACC__HIGHCONTRAST aside,body.ACC__HIGHCONTRAST b,body.ACC__HIGHCONTRAST basefont,body.ACC__HIGHCONTRAST bdi,body.ACC__HIGHCONTRAST big,body.ACC__HIGHCONTRAST blink,body.ACC__HIGHCONTRAST blockquote,body.ACC__HIGHCONTRAST body,body.ACC__HIGHCONTRAST button,body.ACC__HIGHCONTRAST canvas,body.ACC__HIGHCONTRAST caption,body.ACC__HIGHCONTRAST center,body.ACC__HIGHCONTRAST cite,body.ACC__HIGHCONTRAST code,body.ACC__HIGHCONTRAST col,body.ACC__HIGHCONTRAST colgroup,body.ACC__HIGHCONTRAST command,body.ACC__HIGHCONTRAST dd,body.ACC__HIGHCONTRAST del,body.ACC__HIGHCONTRAST details,body.ACC__HIGHCONTRAST dfn,body.ACC__HIGHCONTRAST dir,body.ACC__HIGHCONTRAST div,body.ACC__HIGHCONTRAST dl,body.ACC__HIGHCONTRAST dt,body.ACC__HIGHCONTRAST em,body.ACC__HIGHCONTRAST embed,body.ACC__HIGHCONTRAST fieldset,body.ACC__HIGHCONTRAST figcaption,body.ACC__HIGHCONTRAST figure,body.ACC__HIGHCONTRAST font,body.ACC__HIGHCONTRAST footer,body.ACC__HIGHCONTRAST form,body.ACC__HIGHCONTRAST h1,body.ACC__HIGHCONTRAST h1 a,body.ACC__HIGHCONTRAST h1 a b,body.ACC__HIGHCONTRAST h1 abbr,body.ACC__HIGHCONTRAST h1 b,body.ACC__HIGHCONTRAST h1 center,body.ACC__HIGHCONTRAST h1 em,body.ACC__HIGHCONTRAST h1 i,body.ACC__HIGHCONTRAST h1 span,body.ACC__HIGHCONTRAST h1 strong,body.ACC__HIGHCONTRAST h2,body.ACC__HIGHCONTRAST h2 a,body.ACC__HIGHCONTRAST h2 a b,body.ACC__HIGHCONTRAST h2 abbr,body.ACC__HIGHCONTRAST h2 b,body.ACC__HIGHCONTRAST h2 center,body.ACC__HIGHCONTRAST h2 em,body.ACC__HIGHCONTRAST h2 i,body.ACC__HIGHCONTRAST h2 span,body.ACC__HIGHCONTRAST h2 strong,body.ACC__HIGHCONTRAST h3,body.ACC__HIGHCONTRAST h3 a,body.ACC__HIGHCONTRAST h3 a b,body.ACC__HIGHCONTRAST h3 abbr,body.ACC__HIGHCONTRAST h3 b,body.ACC__HIGHCONTRAST h3 center,body.ACC__HIGHCONTRAST h3 em,body.ACC__HIGHCONTRAST h3 i,body.ACC__HIGHCONTRAST h3 span,body.ACC__HIGHCONTRAST h3 strong,body.ACC__HIGHCONTRAST h4,body.ACC__HIGHCONTRAST h4 a,body.ACC__HIGHCONTRAST h4 a b,body.ACC__HIGHCONTRAST h4 abbr,body.ACC__HIGHCONTRAST h4 b,body.ACC__HIGHCONTRAST h4 center,body.ACC__HIGHCONTRAST h4 em,body.ACC__HIGHCONTRAST h4 i,body.ACC__HIGHCONTRAST h4 span,body.ACC__HIGHCONTRAST h4 strong,body.ACC__HIGHCONTRAST h5,body.ACC__HIGHCONTRAST h5 a,body.ACC__HIGHCONTRAST h5 a b,body.ACC__HIGHCONTRAST h5 abbr,body.ACC__HIGHCONTRAST h5 b,body.ACC__HIGHCONTRAST h5 center,body.ACC__HIGHCONTRAST h5 em,body.ACC__HIGHCONTRAST h5 i,body.ACC__HIGHCONTRAST h5 span,body.ACC__HIGHCONTRAST h5 strong,body.ACC__HIGHCONTRAST h6,body.ACC__HIGHCONTRAST h6 a,body.ACC__HIGHCONTRAST h6 a b,body.ACC__HIGHCONTRAST h6 abbr,body.ACC__HIGHCONTRAST h6 b,body.ACC__HIGHCONTRAST h6 center,body.ACC__HIGHCONTRAST h6 em,body.ACC__HIGHCONTRAST h6 i,body.ACC__HIGHCONTRAST h6 span,body.ACC__HIGHCONTRAST h6 strong,body.ACC__HIGHCONTRAST header,body.ACC__HIGHCONTRAST hgroup,body.ACC__HIGHCONTRAST html,body.ACC__HIGHCONTRAST i,body.ACC__HIGHCONTRAST iframe,body.ACC__HIGHCONTRAST img,body.ACC__HIGHCONTRAST input,body.ACC__HIGHCONTRAST ins,body.ACC__HIGHCONTRAST kbd,body.ACC__HIGHCONTRAST label,body.ACC__HIGHCONTRAST legend,body.ACC__HIGHCONTRAST li,body.ACC__HIGHCONTRAST listing,body.ACC__HIGHCONTRAST main,body.ACC__HIGHCONTRAST mark,body.ACC__HIGHCONTRAST marquee,body.ACC__HIGHCONTRAST menu,body.ACC__HIGHCONTRAST meter,body.ACC__HIGHCONTRAST multicol,body.ACC__HIGHCONTRAST nav,body.ACC__HIGHCONTRAST nobr,body.ACC__HIGHCONTRAST object,body.ACC__HIGHCONTRAST ol,body.ACC__HIGHCONTRAST option,body.ACC__HIGHCONTRAST output,body.ACC__HIGHCONTRAST p,body.ACC__HIGHCONTRAST plaintext,body.ACC__HIGHCONTRAST pre,body.ACC__HIGHCONTRAST progress,body.ACC__HIGHCONTRAST q,body.ACC__HIGHCONTRAST rb,body.ACC__HIGHCONTRAST rp,body.ACC__HIGHCONTRAST rt,body.ACC__HIGHCONTRAST ruby,body.ACC__HIGHCONTRAST s,body.ACC__HIGHCONTRAST samp,body.ACC__HIGHCONTRAST section,body.ACC__HIGHCONTRAST select,body.ACC__HIGHCONTRAST small,body.ACC__HIGHCONTRAST span,body.ACC__HIGHCONTRAST strike,body.ACC__HIGHCONTRAST strong,body.ACC__HIGHCONTRAST sub,body.ACC__HIGHCONTRAST summary,body.ACC__HIGHCONTRAST sup,body.ACC__HIGHCONTRAST svg,body.ACC__HIGHCONTRAST table,body.ACC__HIGHCONTRAST tbody,body.ACC__HIGHCONTRAST td,body.ACC__HIGHCONTRAST text,body.ACC__HIGHCONTRAST textarea,body.ACC__HIGHCONTRAST th,body.ACC__HIGHCONTRAST thead,body.ACC__HIGHCONTRAST time,body.ACC__HIGHCONTRAST tr,body.ACC__HIGHCONTRAST tt,body.ACC__HIGHCONTRAST u,body.ACC__HIGHCONTRAST ul,body.ACC__HIGHCONTRAST var,body.ACC__HIGHCONTRAST video,body.ACC__HIGHCONTRAST xmp{-moz-appearance:none !important;-moz-user-select:text !important;-webkit-user-select:text !important;background-image:none !important;text-shadow:none !important;user-select:text !important}body.ACC__HIGHCONTRAST a,body.ACC__HIGHCONTRAST abbr,body.ACC__HIGHCONTRAST acronym,body.ACC__HIGHCONTRAST address,body.ACC__HIGHCONTRAST article,body.ACC__HIGHCONTRAST aside,body.ACC__HIGHCONTRAST b,body.ACC__HIGHCONTRAST basefont,body.ACC__HIGHCONTRAST bdi,body.ACC__HIGHCONTRAST big,body.ACC__HIGHCONTRAST blink,body.ACC__HIGHCONTRAST blockquote,body.ACC__HIGHCONTRAST body,body.ACC__HIGHCONTRAST canvas,body.ACC__HIGHCONTRAST caption,body.ACC__HIGHCONTRAST center,body.ACC__HIGHCONTRAST cite,body.ACC__HIGHCONTRAST code,body.ACC__HIGHCONTRAST col,body.ACC__HIGHCONTRAST colgroup,body.ACC__HIGHCONTRAST command,body.ACC__HIGHCONTRAST dd,body.ACC__HIGHCONTRAST del,body.ACC__HIGHCONTRAST details,body.ACC__HIGHCONTRAST dfn,body.ACC__HIGHCONTRAST dir,body.ACC__HIGHCONTRAST div,body.ACC__HIGHCONTRAST dl,body.ACC__HIGHCONTRAST dt,body.ACC__HIGHCONTRAST em,body.ACC__HIGHCONTRAST embed,body.ACC__HIGHCONTRAST fieldset,body.ACC__HIGHCONTRAST figcaption,body.ACC__HIGHCONTRAST figure,body.ACC__HIGHCONTRAST font,body.ACC__HIGHCONTRAST footer,body.ACC__HIGHCONTRAST form,body.ACC__HIGHCONTRAST h1,body.ACC__HIGHCONTRAST h1 a,body.ACC__HIGHCONTRAST h1 a b,body.ACC__HIGHCONTRAST h1 abbr,body.ACC__HIGHCONTRAST h1 b,body.ACC__HIGHCONTRAST h1 center,body.ACC__HIGHCONTRAST h1 em,body.ACC__HIGHCONTRAST h1 i,body.ACC__HIGHCONTRAST h1 span,body.ACC__HIGHCONTRAST h1 strong,body.ACC__HIGHCONTRAST h2,body.ACC__HIGHCONTRAST h2 a,body.ACC__HIGHCONTRAST h2 a b,body.ACC__HIGHCONTRAST h2 abbr,body.ACC__HIGHCONTRAST h2 b,body.ACC__HIGHCONTRAST h2 center,body.ACC__HIGHCONTRAST h2 em,body.ACC__HIGHCONTRAST h2 i,body.ACC__HIGHCONTRAST h2 span,body.ACC__HIGHCONTRAST h2 strong,body.ACC__HIGHCONTRAST h3,body.ACC__HIGHCONTRAST h3 a,body.ACC__HIGHCONTRAST h3 a b,body.ACC__HIGHCONTRAST h3 abbr,body.ACC__HIGHCONTRAST h3 b,body.ACC__HIGHCONTRAST h3 center,body.ACC__HIGHCONTRAST h3 em,body.ACC__HIGHCONTRAST h3 i,body.ACC__HIGHCONTRAST h3 span,body.ACC__HIGHCONTRAST h3 strong,body.ACC__HIGHCONTRAST h4,body.ACC__HIGHCONTRAST h4 a,body.ACC__HIGHCONTRAST h4 a b,body.ACC__HIGHCONTRAST h4 abbr,body.ACC__HIGHCONTRAST h4 b,body.ACC__HIGHCONTRAST h4 center,body.ACC__HIGHCONTRAST h4 em,body.ACC__HIGHCONTRAST h4 i,body.ACC__HIGHCONTRAST h4 span,body.ACC__HIGHCONTRAST h4 strong,body.ACC__HIGHCONTRAST h5,body.ACC__HIGHCONTRAST h5 a,body.ACC__HIGHCONTRAST h5 a b,body.ACC__HIGHCONTRAST h5 abbr,body.ACC__HIGHCONTRAST h5 b,body.ACC__HIGHCONTRAST h5 center,body.ACC__HIGHCONTRAST h5 em,body.ACC__HIGHCONTRAST h5 i,body.ACC__HIGHCONTRAST h5 span,body.ACC__HIGHCONTRAST h5 strong,body.ACC__HIGHCONTRAST h6,body.ACC__HIGHCONTRAST h6 a,body.ACC__HIGHCONTRAST h6 a b,body.ACC__HIGHCONTRAST h6 abbr,body.ACC__HIGHCONTRAST h6 b,body.ACC__HIGHCONTRAST h6 center,body.ACC__HIGHCONTRAST h6 em,body.ACC__HIGHCONTRAST h6 i,body.ACC__HIGHCONTRAST h6 span,body.ACC__HIGHCONTRAST h6 strong,body.ACC__HIGHCONTRAST header,body.ACC__HIGHCONTRAST hgroup,body.ACC__HIGHCONTRAST html,body.ACC__HIGHCONTRAST i,body.ACC__HIGHCONTRAST iframe,body.ACC__HIGHCONTRAST input,body.ACC__HIGHCONTRAST ins,body.ACC__HIGHCONTRAST kbd,body.ACC__HIGHCONTRAST label,body.ACC__HIGHCONTRAST legend,body.ACC__HIGHCONTRAST li,body.ACC__HIGHCONTRAST listing,body.ACC__HIGHCONTRAST main,body.ACC__HIGHCONTRAST mark,body.ACC__HIGHCONTRAST marquee,body.ACC__HIGHCONTRAST menu,body.ACC__HIGHCONTRAST meter,body.ACC__HIGHCONTRAST multicol,body.ACC__HIGHCONTRAST nobr,body.ACC__HIGHCONTRAST object,body.ACC__HIGHCONTRAST ol,body.ACC__HIGHCONTRAST option,body.ACC__HIGHCONTRAST output,body.ACC__HIGHCONTRAST p,body.ACC__HIGHCONTRAST plaintext,body.ACC__HIGHCONTRAST pre,body.ACC__HIGHCONTRAST progress,body.ACC__HIGHCONTRAST q,body.ACC__HIGHCONTRAST rb,body.ACC__HIGHCONTRAST rp,body.ACC__HIGHCONTRAST rt,body.ACC__HIGHCONTRAST ruby,body.ACC__HIGHCONTRAST s,body.ACC__HIGHCONTRAST samp,body.ACC__HIGHCONTRAST section,body.ACC__HIGHCONTRAST small,body.ACC__HIGHCONTRAST span,body.ACC__HIGHCONTRAST strike,body.ACC__HIGHCONTRAST strong,body.ACC__HIGHCONTRAST sub,body.ACC__HIGHCONTRAST summary,body.ACC__HIGHCONTRAST sup,body.ACC__HIGHCONTRAST svg,body.ACC__HIGHCONTRAST table,body.ACC__HIGHCONTRAST tbody,body.ACC__HIGHCONTRAST td,body.ACC__HIGHCONTRAST text,body.ACC__HIGHCONTRAST textarea,body.ACC__HIGHCONTRAST th,body.ACC__HIGHCONTRAST thead,body.ACC__HIGHCONTRAST time,body.ACC__HIGHCONTRAST tr,body.ACC__HIGHCONTRAST tt,body.ACC__HIGHCONTRAST u,body.ACC__HIGHCONTRAST ul,body.ACC__HIGHCONTRAST var,body.ACC__HIGHCONTRAST video,body.ACC__HIGHCONTRAST xmp{background:black !important;background-color:black !important}body.ACC__HIGHCONTRAST a,body.ACC__HIGHCONTRAST article,body.ACC__HIGHCONTRAST aside,body.ACC__HIGHCONTRAST basefont,body.ACC__HIGHCONTRAST bdi,body.ACC__HIGHCONTRAST big,body.ACC__HIGHCONTRAST blink,body.ACC__HIGHCONTRAST blockquote,body.ACC__HIGHCONTRAST body,body.ACC__HIGHCONTRAST button,body.ACC__HIGHCONTRAST canvas,body.ACC__HIGHCONTRAST caption,body.ACC__HIGHCONTRAST center,body.ACC__HIGHCONTRAST code,body.ACC__HIGHCONTRAST col,body.ACC__HIGHCONTRAST colgroup,body.ACC__HIGHCONTRAST command,body.ACC__HIGHCONTRAST dd,body.ACC__HIGHCONTRAST del,body.ACC__HIGHCONTRAST details,body.ACC__HIGHCONTRAST dir,body.ACC__HIGHCONTRAST div,body.ACC__HIGHCONTRAST dl,body.ACC__HIGHCONTRAST dt,body.ACC__HIGHCONTRAST embed,body.ACC__HIGHCONTRAST fieldset,body.ACC__HIGHCONTRAST figcaption,body.ACC__HIGHCONTRAST figure,body.ACC__HIGHCONTRAST font,body.ACC__HIGHCONTRAST footer,body.ACC__HIGHCONTRAST form,body.ACC__HIGHCONTRAST header,body.ACC__HIGHCONTRAST hgroup,body.ACC__HIGHCONTRAST html,body.ACC__HIGHCONTRAST iframe,body.ACC__HIGHCONTRAST img,body.ACC__HIGHCONTRAST input,body.ACC__HIGHCONTRAST ins,body.ACC__HIGHCONTRAST kbd,body.ACC__HIGHCONTRAST label,body.ACC__HIGHCONTRAST legend,body.ACC__HIGHCONTRAST li,body.ACC__HIGHCONTRAST listing,body.ACC__HIGHCONTRAST main,body.ACC__HIGHCONTRAST mark,body.ACC__HIGHCONTRAST marquee,body.ACC__HIGHCONTRAST menu,body.ACC__HIGHCONTRAST meter,body.ACC__HIGHCONTRAST multicol,body.ACC__HIGHCONTRAST nav,body.ACC__HIGHCONTRAST nobr,body.ACC__HIGHCONTRAST object,body.ACC__HIGHCONTRAST ol,body.ACC__HIGHCONTRAST option,body.ACC__HIGHCONTRAST output,body.ACC__HIGHCONTRAST p,body.ACC__HIGHCONTRAST plaintext,body.ACC__HIGHCONTRAST pre,body.ACC__HIGHCONTRAST progress,body.ACC__HIGHCONTRAST q,body.ACC__HIGHCONTRAST rb,body.ACC__HIGHCONTRAST rp,body.ACC__HIGHCONTRAST rt,body.ACC__HIGHCONTRAST ruby,body.ACC__HIGHCONTRAST s,body.ACC__HIGHCONTRAST samp,body.ACC__HIGHCONTRAST section,body.ACC__HIGHCONTRAST select,body.ACC__HIGHCONTRAST small,body.ACC__HIGHCONTRAST span,body.ACC__HIGHCONTRAST strike,body.ACC__HIGHCONTRAST sub,body.ACC__HIGHCONTRAST summary,body.ACC__HIGHCONTRAST sup,body.ACC__HIGHCONTRAST svg,body.ACC__HIGHCONTRAST table,body.ACC__HIGHCONTRAST tbody,body.ACC__HIGHCONTRAST td,body.ACC__HIGHCONTRAST text,body.ACC__HIGHCONTRAST textarea,body.ACC__HIGHCONTRAST th,body.ACC__HIGHCONTRAST thead,body.ACC__HIGHCONTRAST time,body.ACC__HIGHCONTRAST tr,body.ACC__HIGHCONTRAST tt,body.ACC__HIGHCONTRAST ul,body.ACC__HIGHCONTRAST var,body.ACC__HIGHCONTRAST video,body.ACC__HIGHCONTRAST xmp{color:white !important;fill:white !important}body.ACC__HIGHCONTRAST abbr,body.ACC__HIGHCONTRAST acronym,body.ACC__HIGHCONTRAST b,body.ACC__HIGHCONTRAST b span,body.ACC__HIGHCONTRAST h1 b,body.ACC__HIGHCONTRAST h1 strong,body.ACC__HIGHCONTRAST h2 b,body.ACC__HIGHCONTRAST h2 strong,body.ACC__HIGHCONTRAST h3 b,body.ACC__HIGHCONTRAST h3 strong,body.ACC__HIGHCONTRAST h4 b,body.ACC__HIGHCONTRAST h4 strong,body.ACC__HIGHCONTRAST h5 b,body.ACC__HIGHCONTRAST h5 strong,body.ACC__HIGHCONTRAST h6 b,body.ACC__HIGHCONTRAST h6 strong,body.ACC__HIGHCONTRAST strong,body.ACC__HIGHCONTRAST strong span{color:yellow !important;fill:yellow !important}body.ACC__HIGHCONTRAST address,body.ACC__HIGHCONTRAST address span,body.ACC__HIGHCONTRAST cite,body.ACC__HIGHCONTRAST cite span,body.ACC__HIGHCONTRAST dfn,body.ACC__HIGHCONTRAST dfn span,body.ACC__HIGHCONTRAST em,body.ACC__HIGHCONTRAST em span,body.ACC__HIGHCONTRAST h1 em,body.ACC__HIGHCONTRAST h1 i,body.ACC__HIGHCONTRAST h2 em,body.ACC__HIGHCONTRAST h2 i,body.ACC__HIGHCONTRAST h3 em,body.ACC__HIGHCONTRAST h3 i,body.ACC__HIGHCONTRAST h4 em,body.ACC__HIGHCONTRAST h4 i,body.ACC__HIGHCONTRAST h5 em,body.ACC__HIGHCONTRAST h5 i,body.ACC__HIGHCONTRAST h6 em,body.ACC__HIGHCONTRAST h6 i,body.ACC__HIGHCONTRAST i,body.ACC__HIGHCONTRAST i span,body.ACC__HIGHCONTRAST u,body.ACC__HIGHCONTRAST u span{color:#ffff80 !important}body.ACC__HIGHCONTRAST dt{border-top:thin solid grey !important}body.ACC__HIGHCONTRAST h1,body.ACC__HIGHCONTRAST h1 a,body.ACC__HIGHCONTRAST h1 a b,body.ACC__HIGHCONTRAST h1 abbr,body.ACC__HIGHCONTRAST h1 center,body.ACC__HIGHCONTRAST h1 span,body.ACC__HIGHCONTRAST h2,body.ACC__HIGHCONTRAST h2 a,body.ACC__HIGHCONTRAST h2 a b,body.ACC__HIGHCONTRAST h2 abbr,body.ACC__HIGHCONTRAST h2 center,body.ACC__HIGHCONTRAST h2 span,body.ACC__HIGHCONTRAST h3,body.ACC__HIGHCONTRAST h3 a,body.ACC__HIGHCONTRAST h3 a b,body.ACC__HIGHCONTRAST h3 abbr,body.ACC__HIGHCONTRAST h3 center,body.ACC__HIGHCONTRAST h3 span,body.ACC__HIGHCONTRAST h4,body.ACC__HIGHCONTRAST h4 a,body.ACC__HIGHCONTRAST h4 a b,body.ACC__HIGHCONTRAST h4 abbr,body.ACC__HIGHCONTRAST h4 center,body.ACC__HIGHCONTRAST h4 span,body.ACC__HIGHCONTRAST h5,body.ACC__HIGHCONTRAST h5 a,body.ACC__HIGHCONTRAST h5 a b,body.ACC__HIGHCONTRAST h5 abbr,body.ACC__HIGHCONTRAST h5 center,body.ACC__HIGHCONTRAST h5 span,body.ACC__HIGHCONTRAST h6,body.ACC__HIGHCONTRAST h6 a,body.ACC__HIGHCONTRAST h6 a b,body.ACC__HIGHCONTRAST h6 abbr,body.ACC__HIGHCONTRAST h6 center,body.ACC__HIGHCONTRAST h6 span{color:#40c090 !important}body.ACC__HIGHCONTRAST img{background:#808080 !important;background-color:#808080 !important}body.ACC__HIGHCONTRAST abbr,body.ACC__HIGHCONTRAST acronym{border-bottom:1px dotted !important}body.ACC__HIGHCONTRAST:focus{outline:thin dotted !important}body.ACC__HIGHCONTRAST a.button,body.ACC__HIGHCONTRAST a.button abbr,body.ACC__HIGHCONTRAST a.button acronym,body.ACC__HIGHCONTRAST a.button b,body.ACC__HIGHCONTRAST a.button basefont,body.ACC__HIGHCONTRAST a.button big,body.ACC__HIGHCONTRAST a.button br,body.ACC__HIGHCONTRAST a.button code,body.ACC__HIGHCONTRAST a.button div,body.ACC__HIGHCONTRAST a.button em,body.ACC__HIGHCONTRAST a.button font,body.ACC__HIGHCONTRAST a.button h1,body.ACC__HIGHCONTRAST a.button h2,body.ACC__HIGHCONTRAST a.button h3,body.ACC__HIGHCONTRAST a.button h4,body.ACC__HIGHCONTRAST a.button h5,body.ACC__HIGHCONTRAST a.button h6,body.ACC__HIGHCONTRAST a.button i,body.ACC__HIGHCONTRAST a.button kbd,body.ACC__HIGHCONTRAST a.button rb,body.ACC__HIGHCONTRAST a.button rp,body.ACC__HIGHCONTRAST a.button rt,body.ACC__HIGHCONTRAST a.button ruby,body.ACC__HIGHCONTRAST a.button samp,body.ACC__HIGHCONTRAST a.button small,body.ACC__HIGHCONTRAST a.button span,body.ACC__HIGHCONTRAST a.button strong,body.ACC__HIGHCONTRAST a.button tt,body.ACC__HIGHCONTRAST a.button u,body.ACC__HIGHCONTRAST a.button var,body.ACC__HIGHCONTRAST a:link,body.ACC__HIGHCONTRAST a:link abbr,body.ACC__HIGHCONTRAST a:link acronym,body.ACC__HIGHCONTRAST a:link b,body.ACC__HIGHCONTRAST a:link basefont,body.ACC__HIGHCONTRAST a:link big,body.ACC__HIGHCONTRAST a:link br,body.ACC__HIGHCONTRAST a:link code,body.ACC__HIGHCONTRAST a:link div,body.ACC__HIGHCONTRAST a:link em,body.ACC__HIGHCONTRAST a:link font,body.ACC__HIGHCONTRAST a:link h1,body.ACC__HIGHCONTRAST a:link h2,body.ACC__HIGHCONTRAST a:link h3,body.ACC__HIGHCONTRAST a:link h4,body.ACC__HIGHCONTRAST a:link h5,body.ACC__HIGHCONTRAST a:link h6,body.ACC__HIGHCONTRAST a:link i,body.ACC__HIGHCONTRAST a:link kbd,body.ACC__HIGHCONTRAST a:link rb,body.ACC__HIGHCONTRAST a:link rp,body.ACC__HIGHCONTRAST a:link rt,body.ACC__HIGHCONTRAST a:link ruby,body.ACC__HIGHCONTRAST a:link samp,body.ACC__HIGHCONTRAST a:link small,body.ACC__HIGHCONTRAST a:link span,body.ACC__HIGHCONTRAST a:link strong,body.ACC__HIGHCONTRAST a:link tt,body.ACC__HIGHCONTRAST a:link u,body.ACC__HIGHCONTRAST a:link var,body.ACC__HIGHCONTRAST div#secondaryNav div#documentNavigation ul.navigationTabs li.tabItem{color:#0080ff !important}body.ACC__HIGHCONTRAST button,body.ACC__HIGHCONTRAST input,body.ACC__HIGHCONTRAST textarea,body.ACC__HIGHCONTRAST select,body.ACC__HIGHCONTRAST table,body.ACC__HIGHCONTRAST td,body.ACC__HIGHCONTRAST th,body.ACC__HIGHCONTRAST tr,body.ACC__HIGHCONTRAST tt{border:1px solid #ffffff !important}body.ACC__HIGHCONTRAST button{background:#600040 !important;background-color:#600040 !important}body.ACC__HIGHCONTRAST select{-webkit-appearance:listbox !important;background:#600060 !important;background-color:#600060 !important}body.ACC__HIGHCONTRAST a:visited,body.ACC__HIGHCONTRAST a:visited abbr,body.ACC__HIGHCONTRAST a:visited acronym,body.ACC__HIGHCONTRAST a:visited b,body.ACC__HIGHCONTRAST a:visited basefont,body.ACC__HIGHCONTRAST a:visited big,body.ACC__HIGHCONTRAST a:visited br,body.ACC__HIGHCONTRAST a:visited code,body.ACC__HIGHCONTRAST a:visited div,body.ACC__HIGHCONTRAST a:visited em,body.ACC__HIGHCONTRAST a:visited font,body.ACC__HIGHCONTRAST a:visited h1,body.ACC__HIGHCONTRAST a:visited h2,body.ACC__HIGHCONTRAST a:visited h3,body.ACC__HIGHCONTRAST a:visited h4,body.ACC__HIGHCONTRAST a:visited h5,body.ACC__HIGHCONTRAST a:visited h6,body.ACC__HIGHCONTRAST a:visited i,body.ACC__HIGHCONTRAST a:visited kbd,body.ACC__HIGHCONTRAST a:visited rb,body.ACC__HIGHCONTRAST a:visited rp,body.ACC__HIGHCONTRAST a:visited rt,body.ACC__HIGHCONTRAST a:visited ruby,body.ACC__HIGHCONTRAST a:visited samp,body.ACC__HIGHCONTRAST a:visited small,body.ACC__HIGHCONTRAST a:visited span,body.ACC__HIGHCONTRAST a:visited strong,body.ACC__HIGHCONTRAST a:visited tt,body.ACC__HIGHCONTRAST a:visited u,body.ACC__HIGHCONTRAST a:visited var,body.ACC__HIGHCONTRAST div#secondaryNav div#documentNavigation ul.navigationTabs li.tabItem.active{color:#00ffff !important}body.ACC__HIGHCONTRAST::selection,body.ACC__HIGHCONTRAST::-moz-selection{background:#4080c0 !important;background-color:#4080c0 !important}body.ACC__HIGHCONTRAST a.button:hover,body.ACC__HIGHCONTRAST a.button:hover abbr,body.ACC__HIGHCONTRAST a.button:hover acronym,body.ACC__HIGHCONTRAST a.button:hover b,body.ACC__HIGHCONTRAST a.button:hover basefont,body.ACC__HIGHCONTRAST a.button:hover big,body.ACC__HIGHCONTRAST a.button:hover br,body.ACC__HIGHCONTRAST a.button:hover code,body.ACC__HIGHCONTRAST a.button:hover div,body.ACC__HIGHCONTRAST a.button:hover em,body.ACC__HIGHCONTRAST a.button:hover font,body.ACC__HIGHCONTRAST a.button:hover h1,body.ACC__HIGHCONTRAST a.button:hover h2,body.ACC__HIGHCONTRAST a.button:hover h3,body.ACC__HIGHCONTRAST a.button:hover h4,body.ACC__HIGHCONTRAST a.button:hover h5,body.ACC__HIGHCONTRAST a.button:hover h6,body.ACC__HIGHCONTRAST a.button:hover i,body.ACC__HIGHCONTRAST a.button:hover kbd,body.ACC__HIGHCONTRAST a.button:hover rb,body.ACC__HIGHCONTRAST a.button:hover rp,body.ACC__HIGHCONTRAST a.button:hover rt,body.ACC__HIGHCONTRAST a.button:hover ruby,body.ACC__HIGHCONTRAST a.button:hover samp,body.ACC__HIGHCONTRAST a.button:hover small,body.ACC__HIGHCONTRAST a.button:hover span,body.ACC__HIGHCONTRAST a.button:hover strong,body.ACC__HIGHCONTRAST a.button:hover tt,body.ACC__HIGHCONTRAST a.button:hover u,body.ACC__HIGHCONTRAST a.button:hover var,body.ACC__HIGHCONTRAST a:link:hover,body.ACC__HIGHCONTRAST a:link:hover abbr,body.ACC__HIGHCONTRAST a:link:hover acronym,body.ACC__HIGHCONTRAST a:link:hover b,body.ACC__HIGHCONTRAST a:link:hover basefont,body.ACC__HIGHCONTRAST a:link:hover big,body.ACC__HIGHCONTRAST a:link:hover br,body.ACC__HIGHCONTRAST a:link:hover code,body.ACC__HIGHCONTRAST a:link:hover div,body.ACC__HIGHCONTRAST a:link:hover em,body.ACC__HIGHCONTRAST a:link:hover font,body.ACC__HIGHCONTRAST a:link:hover h1,body.ACC__HIGHCONTRAST a:link:hover h2,body.ACC__HIGHCONTRAST a:link:hover h3,body.ACC__HIGHCONTRAST a:link:hover h4,body.ACC__HIGHCONTRAST a:link:hover h5,body.ACC__HIGHCONTRAST a:link:hover h6,body.ACC__HIGHCONTRAST a:link:hover i,body.ACC__HIGHCONTRAST a:link:hover kbd,body.ACC__HIGHCONTRAST a:link:hover rb,body.ACC__HIGHCONTRAST a:link:hover rp,body.ACC__HIGHCONTRAST a:link:hover rt,body.ACC__HIGHCONTRAST a:link:hover ruby,body.ACC__HIGHCONTRAST a:link:hover samp,body.ACC__HIGHCONTRAST a:link:hover small,body.ACC__HIGHCONTRAST a:link:hover span,body.ACC__HIGHCONTRAST a:link:hover strong,body.ACC__HIGHCONTRAST a:link:hover tt,body.ACC__HIGHCONTRAST a:link:hover u,body.ACC__HIGHCONTRAST a:link:hover var,body.ACC__HIGHCONTRAST a:visited:hover,body.ACC__HIGHCONTRAST a:visited:hover abbr,body.ACC__HIGHCONTRAST a:visited:hover acronym,body.ACC__HIGHCONTRAST a:visited:hover b,body.ACC__HIGHCONTRAST a:visited:hover basefont,body.ACC__HIGHCONTRAST a:visited:hover big,body.ACC__HIGHCONTRAST a:visited:hover br,body.ACC__HIGHCONTRAST a:visited:hover code,body.ACC__HIGHCONTRAST a:visited:hover div,body.ACC__HIGHCONTRAST a:visited:hover em,body.ACC__HIGHCONTRAST a:visited:hover font,body.ACC__HIGHCONTRAST a:visited:hover h1,body.ACC__HIGHCONTRAST a:visited:hover h2,body.ACC__HIGHCONTRAST a:visited:hover h3,body.ACC__HIGHCONTRAST a:visited:hover h4,body.ACC__HIGHCONTRAST a:visited:hover h5,body.ACC__HIGHCONTRAST a:visited:hover h6,body.ACC__HIGHCONTRAST a:visited:hover i,body.ACC__HIGHCONTRAST a:visited:hover kbd,body.ACC__HIGHCONTRAST a:visited:hover rb,body.ACC__HIGHCONTRAST a:visited:hover rp,body.ACC__HIGHCONTRAST a:visited:hover rt,body.ACC__HIGHCONTRAST a:visited:hover ruby,body.ACC__HIGHCONTRAST a:visited:hover samp,body.ACC__HIGHCONTRAST a:visited:hover small,body.ACC__HIGHCONTRAST a:visited:hover span,body.ACC__HIGHCONTRAST a:visited:hover strong,body.ACC__HIGHCONTRAST a:visited:hover tt,body.ACC__HIGHCONTRAST a:visited:hover u,body.ACC__HIGHCONTRAST a:visited:hover var{background:#400000 !important;background-color:#400000 !important}body.ACC__HIGHCONTRAST body>input#site+div#wrapper span.mk,body.ACC__HIGHCONTRAST body>input#site+div#wrapper span.mk b,body.ACC__HIGHCONTRAST input[type=\"reset\"]{background:#400060 !important;background-color:#400060 !important}body.ACC__HIGHCONTRAST div[role=\"button\"],body.ACC__HIGHCONTRAST input[type=\"button\"],body.ACC__HIGHCONTRAST input[type=\"submit\"]{background:#600040 !important;background-color:#600040 !important}body.ACC__HIGHCONTRAST input[type=\"search\"]{-webkit-appearance:textfield !important}body.ACC__HIGHCONTRAST html button[disabled],body.ACC__HIGHCONTRAST html input[disabled],body.ACC__HIGHCONTRAST html select[disabled],body.ACC__HIGHCONTRAST html textarea[disabled]{background:#404040 !important;background-color:#404040 !important}body.ACC__HIGHCONTRAST .menu li a span.label{text-transform:none !important}body.ACC__HIGHCONTRAST .menu li a span.label,body.ACC__HIGHCONTRAST div.jwplayer span.jwcontrolbar,body.ACC__HIGHCONTRAST div.jwplayer span.jwcontrols{display:inline !important}body.ACC__HIGHCONTRAST a:link.new,body.ACC__HIGHCONTRAST a:link.new i,body.ACC__HIGHCONTRAST a:link.new b,body.ACC__HIGHCONTRAST span.Apple-style-span{color:#ffff40 !important}body.ACC__HIGHCONTRAST body.mediawiki img.tex{background:white !important;background-color:white !important;border:white solid 3px !important}body.ACC__HIGHCONTRAST text>tspan:first-letter,body.ACC__HIGHCONTRAST text>tspan:first-line{background:inherit !important;background-color:inherit !important;color:inherit !important}body.ACC__HIGHCONTRAST div.sbtc div.sbsb_a li.sbsb_d div,body.ACC__HIGHCONTRAST table.gssb_c tr.gssb_i a,body.ACC__HIGHCONTRAST table.gssb_c tr.gssb_i b,body.ACC__HIGHCONTRAST table.gssb_c tr.gssb_i span,body.ACC__HIGHCONTRAST table.gssb_c tr.gssb_i td{background:#003050 !important;background-color:#003050 !important}body.ACC__HIGHCONTRAST img[width=\"18\"][height=\"18\"]{height:18px !important;width:18px !important}body.ACC__HIGHCONTRAST a>span.iconHelp:empty:after{content:\"Help\" !important}body.ACC__HIGHCONTRAST div#gmap,body.ACC__HIGHCONTRAST div#gmap *{background:initial !important}body.ACC__FONTREADABLE,body.ACC__FONTREADABLE *:not(i):not(span){font-family:Verdana, Arial, Helvetica, sans-serif !important}.ACC__READGUIDELINE{position:fixed;width:100%;background:#000;height:5px;border-top:2px solid #ff0;border-bottom:2px solid #ff0;top:50%;z-index:99999;display:none;left:0}.ACC__READGUIDELINE.show{display:block}body.ACC__HIGHLIGHTLINKD a{background-color:#000 !important;color:yellow !important}.ACC__LETTERSPACING a,.ACC__LETTERSPACING p,.ACC__LETTERSPACING h1,.ACC__LETTERSPACING h2,.ACC__LETTERSPACING h3,.ACC__LETTERSPACING h4,.ACC__LETTERSPACING h5,.ACC__LETTERSPACING h6,.ACC__LETTERSPACING span,.ACC__LETTERSPACING td{letter-spacing:3px}.ACC__WORDSPACING a,.ACC__WORDSPACING p,.ACC__WORDSPACING h1,.ACC__WORDSPACING h2,.ACC__WORDSPACING h3,.ACC__WORDSPACING h4,.ACC__WORDSPACING h5,.ACC__WORDSPACING h6,.ACC__WORDSPACING span,.ACC__WORDSPACING td{word-spacing:3px}#accessability.accessability *{background-color:#fff !important;color:#000 !important;fill:#000;letter-spacing:0;word-spacing:0;text-decoration:none !important}#accessability.accessability .accessability__link{background-color:#13d376 !important}#accessability.accessability .accessability__link *{background-color:#13d376 !important;fill:#fff}#accessability.accessability .ACC__READGUIDELINE{background-color:#000 !important}\n", ""]);
+// Exports
+module.exports = exports;
+
+
+/***/ }),
+/* 339 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+// eslint-disable-next-line func-names
+module.exports = function (useSourceMap) {
+  var list = []; // return the list of modules as css string
+
+  list.toString = function toString() {
+    return this.map(function (item) {
+      var content = cssWithMappingToString(item, useSourceMap);
+
+      if (item[2]) {
+        return "@media ".concat(item[2], " {").concat(content, "}");
+      }
+
+      return content;
+    }).join('');
+  }; // import a list of modules into the list
+  // eslint-disable-next-line func-names
+
+
+  list.i = function (modules, mediaQuery, dedupe) {
+    if (typeof modules === 'string') {
+      // eslint-disable-next-line no-param-reassign
+      modules = [[null, modules, '']];
+    }
+
+    var alreadyImportedModules = {};
+
+    if (dedupe) {
+      for (var i = 0; i < this.length; i++) {
+        // eslint-disable-next-line prefer-destructuring
+        var id = this[i][0];
+
+        if (id != null) {
+          alreadyImportedModules[id] = true;
+        }
+      }
+    }
+
+    for (var _i = 0; _i < modules.length; _i++) {
+      var item = [].concat(modules[_i]);
+
+      if (dedupe && alreadyImportedModules[item[0]]) {
+        // eslint-disable-next-line no-continue
+        continue;
+      }
+
+      if (mediaQuery) {
+        if (!item[2]) {
+          item[2] = mediaQuery;
+        } else {
+          item[2] = "".concat(mediaQuery, " and ").concat(item[2]);
+        }
+      }
+
+      list.push(item);
+    }
+  };
+
+  return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+  var content = item[1] || ''; // eslint-disable-next-line prefer-destructuring
+
+  var cssMapping = item[3];
+
+  if (!cssMapping) {
+    return content;
+  }
+
+  if (useSourceMap && typeof btoa === 'function') {
+    var sourceMapping = toComment(cssMapping);
+    var sourceURLs = cssMapping.sources.map(function (source) {
+      return "/*# sourceURL=".concat(cssMapping.sourceRoot || '').concat(source, " */");
+    });
+    return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+  }
+
+  return [content].join('\n');
+} // Adapted from convert-source-map (MIT)
+
+
+function toComment(sourceMap) {
+  // eslint-disable-next-line no-undef
+  var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+  var data = "sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(base64);
+  return "/*# ".concat(data, " */");
+}
+
+/***/ }),
+/* 340 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10079,7 +10497,7 @@ var Settings = function Settings() {
 exports.default = new Settings().settings;
 
 /***/ }),
-/* 337 */
+/* 341 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
