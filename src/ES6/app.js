@@ -84,18 +84,5 @@ class App {
 
 
 
-ACC.init('#app', {
-  fontSize: ['20px', '25px', '30px'],
-  fontIncrease: true,
-  fontDecrease: true,
-  highContrast: true,
-  negativeContrast: false,
-  linkUnderLine: false,
-  highLightLinks: false,
-  fontReadable: false,
-  readGuide: false,
-  letterSpacing: false,
-  wordSpacing: false,
-  drag: true
-})
+
 
