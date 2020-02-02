@@ -33,7 +33,7 @@ class helpers {
     * @param {object} options
     */
    extendObject(defaultOptions, options) {
-      for (var key in defaultOptions) {
+      for (let key in defaultOptions) {
          if (!options.hasOwnProperty(key)) {
             options[key] = defaultOptions[key];
          }
@@ -45,4 +45,4 @@ class helpers {
 
 }
 
-export default helpers;
+export default new helpers();
