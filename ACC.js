@@ -546,7 +546,7 @@ function speak(text){
 }
 
 let prevTarget = null;
-document.addEventListener('mousedown', (e)=>{
+document.addEventListener('mouseover', (e)=>{
    synth.cancel();
    prevTarget ? prevTarget.classList.remove('flashClass') : '';
 
