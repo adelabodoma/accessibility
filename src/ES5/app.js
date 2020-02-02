@@ -506,6 +506,52 @@
 })();
 
 
+class App {
+
+   /**
+   * init the function with passed params.
+   * @public
+   */
+   init(selector, options) {
+      let ele, options, elem, defaultSize
+      ele = _$(selector);
+
+      // Check if the selector exist in the DOM
+      if (!ele) {
+         throw Error('Invalid Selector');
+      }
+
+      /**
+      * Current options set by the caller including defaults.
+      * @public;
+      */
+      options = options;
+      if (typeof options !== "object") {
+         throw Error('Invalid Options! Options must be an object');
+      }
+
+      if (typeof options.fontSize !== "object" && !Array.isArray(options.fontSize)) {
+         throw Error('Invalid FontSize! FontSize must be an Array');
+      }
+      this.options = extendObject(this.options, options);
+      /**
+       *  GET DEFAULT FONT SIZE TO RESET IN CASE NON SIZES
+       */
+      elem = _$("html");
+      defaultSize = window.getComputedStyle(elem, null).getPropertyValue("font-size");
+
+      /**
+       * APPEND DEFAULT SIZE TO SIZE ARRAY
+       */
+      this.options.fontSize.unshift(defaultSize);
+
+      // Render HTML Template
+      this.initialize(selector);
+   }
+
+   window.ACC = ACC.prototype;
+}
+
 ACC.init('#app', {
    fontSize: ['50px', '90px', '100px'],
    fontIncrease: true,

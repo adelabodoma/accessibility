@@ -91,7 +91,27 @@
 
     <div id="app"></div>
 
+    <select></select >
 
-    <script src="./src/ES5/app.js"></script>
+
+    <script src="./ACC.js"></script>
 </body>
 </html>
+
+<style>
+    .flashClass {
+        animation-name: flash;
+        animation-duration: .9s;
+
+    }
+
+    @keyframes flash{
+        0% {
+            background: rgba(0, 0, 0, .3);
+        }
+
+        100% {
+            background: none;
+        }
+    }
+</style>

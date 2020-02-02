@@ -506,6 +506,58 @@
 })();
 
 
+var synth = window.speechSynthesis;
+synth.cancel();
+
+var voices = [];
+
+function populateVoiceList() {
+  voices = synth.getVoices().sort(function (a, b) {
+      const aname = a.name.toUpperCase(), bname = b.name.toUpperCase();
+      if ( aname < bname ) return -1;
+      else if ( aname == bname ) return 0;
+      else return +1;
+  });
+}
+
+populateVoiceList();
+if (speechSynthesis.onvoiceschanged !== undefined) {
+  speechSynthesis.onvoiceschanged = populateVoiceList;
+}
+
+function speak(text){
+    if (synth.speaking) {
+        console.error('speechSynthesis.speaking');
+        return;
+    }
+    if (text !== '') {
+    var utterThis = new SpeechSynthesisUtterance(text);
+    utterThis.onend = function (event) {
+        console.log('SpeechSynthesisUtterance.onend');
+    }
+    utterThis.onerror = function (event) {
+        console.error('SpeechSynthesisUtterance.onerror');
+    }
+    utterThis.voice = voices[0]
+    utterThis.pitch = 1;
+    utterThis.rate = 1;
+    synth.speak(utterThis);
+  }
+}
+
+let prevTarget = null;
+document.addEventListener('mousedown', (e)=>{
+   synth.cancel();
+   prevTarget ? prevTarget.classList.remove('flashClass') : '';
+
+   if (e.target.textContent && !synth.speaking && e.target.nodeName !== 'BODY') {
+      e.target.classList.add('flashClass');
+      prevTarget = e.target;
+
+      speak(e.target.textContent.trim());
+   }
+})
+
 ACC.init('#app', {
    fontSize: ['50px', '90px', '100px'],
    fontIncrease: true,
