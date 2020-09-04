@@ -27,7 +27,7 @@
     "concat": "^1.0.3",
     "css-loader": "^3.4.2",
     "lodash-es": "^4.17.15",
-    "node-sass": "^4.5.3",
+    "node-sass": "^4.13.1",
     "npm-run-all": "^4.1.1",
     "postcss-cli": "^4.1.1",
     "style-loader": "^1.1.3",
